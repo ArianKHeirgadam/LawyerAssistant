@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="EntityMaps\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 
