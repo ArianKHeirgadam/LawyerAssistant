@@ -1,5 +1,9 @@
+using Infrastructure;
+using LawyerAssistant.Application;
 using LawyerAssistant.Application.Contracts.Common;
+using LawyerAssistant.Application.Extentions;
 using LawyerAssistant.Application.Objects;
+using LawyerAssistant.Persistance;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
