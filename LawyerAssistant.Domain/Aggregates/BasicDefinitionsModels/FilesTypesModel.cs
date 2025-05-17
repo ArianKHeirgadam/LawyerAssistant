@@ -1,8 +1,9 @@
 ﻿using LawyerAssistant.Domain.Base;
+using LawyerAssistant.Domain.Base.Contracts;
 
 namespace LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels;
 
-public class FilesTypesModel : ModifyDateTimeWithUserModel
+public class FilesTypesModel : ModifyDateTimeWithUserModel, IEntity
 {
     protected FilesTypesModel()
     {

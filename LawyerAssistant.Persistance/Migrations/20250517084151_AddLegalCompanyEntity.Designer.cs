@@ -4,6 +4,7 @@ using LawyerAssistant.Persistance.ApplicationDbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerAssistant.Persistance.Migrations
 {
     [DbContext(typeof(MainDBContext))]
-    partial class MainDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250517084151_AddLegalCompanyEntity")]
+    partial class AddLegalCompanyEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +41,7 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CityId")
+                    b.Property<int>("CityId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
@@ -70,7 +73,7 @@ namespace LawyerAssistant.Persistance.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<int?>("ProvinceId")
+                    b.Property<int>("ProvinceId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegDateTime")
@@ -178,12 +181,15 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.Property<int>("ProvinceId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ProvincesModelId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("RegDateTime")
                         .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProvinceId");
+                    b.HasIndex("ProvincesModelId");
 
                     b.ToTable("Cities", (string)null);
                 });
@@ -304,7 +310,8 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.CitiesModel", "City")
                         .WithMany("Customers")
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("LawyerAssistant.Domain.Aggregates.IdentitiesModels.LegalCustomersEntity", "Legal")
                         .WithMany("CompanyCustomers")
@@ -314,7 +321,8 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ProvincesModel", "Province")
                         .WithMany("Customers")
                         .HasForeignKey("ProvinceId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("City");
 
@@ -325,13 +333,9 @@ namespace LawyerAssistant.Persistance.Migrations
 
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.CitiesModel", b =>
                 {
-                    b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ProvincesModel", "Province")
+                    b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ProvincesModel", null)
                         .WithMany("Cities")
-                        .HasForeignKey("ProvinceId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Province");
+                        .HasForeignKey("ProvincesModelId");
                 });
 
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.DemandsModel", b =>

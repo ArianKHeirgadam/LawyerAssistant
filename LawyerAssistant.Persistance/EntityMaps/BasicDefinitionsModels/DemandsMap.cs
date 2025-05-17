@@ -1,17 +1,16 @@
 ﻿using LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
 
-namespace LawyerAssistant.Persistance.EntityMaps;
+namespace LawyerAssistant.Persistance.EntityMaps.BasicDefinitionsModels;
 
-public class ProvincesMap : IEntityTypeConfiguration<ProvincesModel>
+public class DemandsMap : IEntityTypeConfiguration<DemandsModel>
 {
-    public void Configure(EntityTypeBuilder<ProvincesModel> entity)
+    public void Configure(EntityTypeBuilder<DemandsModel> entity)
     {
-        entity.ToTable("Provinces");
+        entity.ToTable("Demands");
         entity.HasKey(c => c.Id);
         entity.Property(c => c.Id).HasColumnType("int").ValueGeneratedOnAdd().IsRequired();
-        entity.Property(c => c.IsActive).HasColumnType("bit").IsRequired();
         entity.Property(c => c.Name).HasColumnType("nvarchar(50)").IsRequired();
         entity.Property(c => c.RegDateTime).HasColumnType("datetime").IsRequired();
         entity.Property(c => c.ModDateTime).HasColumnType("datetime");

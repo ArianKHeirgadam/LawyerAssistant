@@ -4,6 +4,7 @@ using LawyerAssistant.Persistance.ApplicationDbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerAssistant.Persistance.Migrations
 {
     [DbContext(typeof(MainDBContext))]
-    partial class MainDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250517065720_AddCustomerAndUsers")]
+    partial class AddCustomerAndUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +41,7 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CityId")
+                    b.Property<int>("CityId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
@@ -54,9 +57,6 @@ namespace LawyerAssistant.Persistance.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("LegalCompanyId")
-                        .HasColumnType("int");
-
                     b.Property<string>("MobileNumber")
                         .IsRequired()
                         .HasMaxLength(11)
@@ -70,7 +70,7 @@ namespace LawyerAssistant.Persistance.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<int?>("ProvinceId")
+                    b.Property<int>("ProvinceId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegDateTime")
@@ -82,8 +82,6 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
-
-                    b.HasIndex("LegalCompanyId");
 
                     b.HasIndex("ProvinceId");
 
@@ -144,7 +142,7 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = -1,
                             FirstName = "Admin",
                             Gender = true,
                             LastName = "User",
@@ -178,12 +176,15 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.Property<int>("ProvinceId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ProvincesModelId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("RegDateTime")
                         .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProvinceId");
+                    b.HasIndex("ProvincesModelId");
 
                     b.ToTable("Cities", (string)null);
                 });
@@ -265,73 +266,30 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.ToTable("Provinces", (string)null);
                 });
 
-            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.IdentitiesModels.LegalCustomersEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("LegalNationalCode")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime?>("ModDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("RegDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LegalCustomers", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Aggregates.Identities.CustomersEntity", b =>
                 {
                     b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.CitiesModel", "City")
                         .WithMany("Customers")
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("LawyerAssistant.Domain.Aggregates.IdentitiesModels.LegalCustomersEntity", "Legal")
-                        .WithMany("CompanyCustomers")
-                        .HasForeignKey("LegalCompanyId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ProvincesModel", "Province")
                         .WithMany("Customers")
                         .HasForeignKey("ProvinceId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("City");
-
-                    b.Navigation("Legal");
 
                     b.Navigation("Province");
                 });
 
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.CitiesModel", b =>
                 {
-                    b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ProvincesModel", "Province")
+                    b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ProvincesModel", null)
                         .WithMany("Cities")
-                        .HasForeignKey("ProvinceId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Province");
+                        .HasForeignKey("ProvincesModelId");
                 });
 
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.DemandsModel", b =>
@@ -360,11 +318,6 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.Navigation("Cities");
 
                     b.Navigation("Customers");
-                });
-
-            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.IdentitiesModels.LegalCustomersEntity", b =>
-                {
-                    b.Navigation("CompanyCustomers");
                 });
 #pragma warning restore 612, 618
         }

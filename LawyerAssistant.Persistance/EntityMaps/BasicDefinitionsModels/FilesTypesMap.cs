@@ -2,19 +2,20 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
-namespace LawyerAssistant.Persistance.EntityMaps;
+namespace LawyerAssistant.Persistance.EntityMaps.BasicDefinitionsModels;
 
-public class DemandsMap : IEntityTypeConfiguration<DemandsModel>
+public class FilesTypesMap : IEntityTypeConfiguration<FilesTypesModel>
 {
-    public void Configure(EntityTypeBuilder<DemandsModel> entity)
+    public void Configure(EntityTypeBuilder<FilesTypesModel> entity)
     {
-        entity.ToTable("Demands");
+        entity.ToTable("FilesTypes");
         entity.HasKey(c => c.Id);
         entity.Property(c => c.Id).HasColumnType("int").ValueGeneratedOnAdd().IsRequired();
         entity.Property(c => c.Name).HasColumnType("nvarchar(50)").IsRequired();
         entity.Property(c => c.RegDateTime).HasColumnType("datetime").IsRequired();
         entity.Property(c => c.ModDateTime).HasColumnType("datetime");
         //============================================================================ارتباطات
+        entity.HasMany(c => c.Demands).WithOne(c => c.FilesType).HasForeignKey(c => c.FileId).OnDelete(DeleteBehavior.Restrict);
         //entity.HasOne(c => c.ModUser).WithMany().HasForeignKey(c => c.ModUserId).OnDelete(DeleteBehavior.Restrict);
         //entity.HasOne(c => c.Province).WithMany(c => c.Cities).HasForeignKey(c => c.ProvinceId).OnDelete(DeleteBehavior.Restrict);
     }

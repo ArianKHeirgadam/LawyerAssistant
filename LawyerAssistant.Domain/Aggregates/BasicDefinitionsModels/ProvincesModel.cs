@@ -1,8 +1,10 @@
-﻿using LawyerAssistant.Domain.Base;
+﻿using Domain.Aggregates.Identities;
+using LawyerAssistant.Domain.Base;
+using LawyerAssistant.Domain.Base.Contracts;
 
 namespace LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels
 {
-    public class ProvincesModel :  ModifyDateTimeWithUserModel
+    public class ProvincesModel :  ModifyDateTimeWithUserModel, IEntity
     {
         protected ProvincesModel()
         {
@@ -11,7 +13,9 @@ namespace LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels
         {
             Name = name;
             IsActive = true;
+            RegDateTime = DateTime.UtcNow;
             Cities = new HashSet<CitiesModel>();
+            Customers = new HashSet<CustomersEntity>();
         }
         public void ChangeActivation(bool isActive)
         {
@@ -20,6 +24,7 @@ namespace LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels
         public void Edit(string name)
         {
             Name = name;
+            ModDateTime = DateTime.UtcNow;
         }
         //======================================================
         /// <summary>
@@ -36,6 +41,7 @@ namespace LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels
         /// 
         /// </summary>
         public ICollection<CitiesModel> Cities { get; set; }
+        public ICollection<CustomersEntity> Customers { get; set; }
 
     }
 }
