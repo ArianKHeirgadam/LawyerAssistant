@@ -1,5 +1,12 @@
-﻿namespace LawyerAssistant.Application.Features.Identities.Legals.Queries;
+﻿using LawyerAssistant.Application.DTOs.Identities;
+using LawyerAssistant.Application.Objects;
+using MediatR;
+using System.ComponentModel.DataAnnotations;
 
-public class GetLegalDetailsQuery
+namespace LawyerAssistant.Application.Features.Identities.Legals.Queries;
+
+public class GetLegalDetailsQuery : IRequest<SysResult<GetLegalCustomerDetailsDTO>>
 {
+    [Required(ErrorMessage = ValidationCommonMessages.IdentifierRequired)]
+    public int Id { get; set; }
 }
