@@ -1,13 +1,10 @@
-﻿namespace LawyerAssistant.Application.Features.Identities.Legals.Commands;
-
-using global::LawyerAssistant.Application.Objects;
-using LawyerAssistant.Application.Objects;
+﻿using LawyerAssistant.Application.Objects;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
-namespace LawyerAssistant.Application.Features.Identities.LegalCustomers.Commands;
+namespace LawyerAssistant.Application.Features.Identities.Legals.Commands;
 
-public class CreateLegalCustomerCommand : IRequest<SysResult>
+public class CreateLegalCommand : IRequest<SysResult>
 {
     /// <summary>
     /// نام شرکت حقوقی

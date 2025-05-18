@@ -5,9 +5,9 @@ using Domain.Aggregates.Identities;
 
 namespace LawyerAssistant.Persistance.EntityMaps.Identities;
 
-public class CustomersMap : IEntityTypeConfiguration<CustomersEntity>
+public class CustomersMap : IEntityTypeConfiguration<CustomersModel>
 {
-    public void Configure(EntityTypeBuilder<CustomersEntity> builder)
+    public void Configure(EntityTypeBuilder<CustomersModel> builder)
     {
         builder.ToTable("Customers");
         builder.HasKey(c => c.Id);

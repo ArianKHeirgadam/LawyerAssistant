@@ -6,9 +6,9 @@ using LawyerAssistant.Application.Extentions;
 
 namespace LawyerAssistant.Persistance.EntityMaps.Identities;
 
-public class UsersMap : IEntityTypeConfiguration<UsersEntity>
+public class UsersMap : IEntityTypeConfiguration<UsersModel>
 {
-    public void Configure(EntityTypeBuilder<UsersEntity> builder)
+    public void Configure(EntityTypeBuilder<UsersModel> builder)
     {
         builder.ToTable("Users");
         builder.HasKey(c => c.Id);
@@ -40,7 +40,7 @@ public class UsersMap : IEntityTypeConfiguration<UsersEntity>
         builder.Property(x => x.Role)
             .IsRequired();
 
-        builder.HasData(new UsersEntity(
+        builder.HasData(new UsersModel(
             1,
             "admin",
             "Admin",

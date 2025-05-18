@@ -9,9 +9,9 @@ namespace LawyerAssistant.Application.Features.Identities.Customers.Handlers.Com
 
 public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, SysResult>
 {
-    private readonly IRepository<CustomersEntity> _repository;
+    private readonly IRepository<CustomersModel> _repository;
 
-    public UpdateCustomerCommandHandler(IRepository<CustomersEntity> repository)
+    public UpdateCustomerCommandHandler(IRepository<CustomersModel> repository)
     {
         _repository = repository;
     }

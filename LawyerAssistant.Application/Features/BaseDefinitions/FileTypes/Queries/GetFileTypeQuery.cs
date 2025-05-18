@@ -1,0 +1,10 @@
+﻿using LawyerAssistant.Application.DTOs.Base;
+using LawyerAssistant.Application.Objects;
+using MediatR;
+
+namespace LawyerAssistant.Application.Features.BaseDefinitions.Cities.Queries;
+
+public class GetFileTypeQuery : PagingRequest, IRequest<SysResult<PagingResponse<GenericDTO>>>
+{
+    public string? Title { get; set; }
+}

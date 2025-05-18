@@ -15,7 +15,7 @@ public class FilesTypesMap : IEntityTypeConfiguration<FilesTypesModel>
         entity.Property(c => c.RegDateTime).HasColumnType("datetime").IsRequired();
         entity.Property(c => c.ModDateTime).HasColumnType("datetime");
         //============================================================================ارتباطات
-        entity.HasMany(c => c.Demands).WithOne(c => c.FilesType).HasForeignKey(c => c.FileId).OnDelete(DeleteBehavior.Restrict);
+        entity.HasMany(c => c.Demands).WithOne(c => c.FilesType).HasForeignKey(c => c.FileTypeId).OnDelete(DeleteBehavior.Restrict);
         //entity.HasOne(c => c.ModUser).WithMany().HasForeignKey(c => c.ModUserId).OnDelete(DeleteBehavior.Restrict);
         //entity.HasOne(c => c.Province).WithMany(c => c.Cities).HasForeignKey(c => c.ProvinceId).OnDelete(DeleteBehavior.Restrict);
     }

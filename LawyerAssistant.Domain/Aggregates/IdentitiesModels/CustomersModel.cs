@@ -6,17 +6,17 @@ using LawyerAssistant.Domain.Base.Contracts;
 
 namespace Domain.Aggregates.Identities
 {
-    public class CustomersEntity : ModifyDateTimeModel, IEntity
+    public class CustomersModel : ModifyDateTimeModel, IEntity
     {
         #region Methods
-        protected CustomersEntity()
+        protected CustomersModel()
         {
 
         }
 
 
         // Constructor for Create
-        public CustomersEntity(string mobileNumber, string firstName, string lastName, string nationalCode, DateTime birthDate, string address, int? cityId, int? provinceId)
+        public CustomersModel(string mobileNumber, string firstName, string lastName, string nationalCode, DateTime birthDate, string address, int? cityId, int? provinceId)
         {
             MobileNumber = mobileNumber;
             FirstName = firstName;
@@ -121,7 +121,7 @@ namespace Domain.Aggregates.Identities
         public int? LegalCompanyId { get; set; }
         public CitiesModel City { get; set; }
         public ProvincesModel Province { get; set; }
-        public LegalCustomersEntity? Legal { get; set; }
+        public LegalCustomersModel? Legal { get; set; }
 
         #endregion
     }

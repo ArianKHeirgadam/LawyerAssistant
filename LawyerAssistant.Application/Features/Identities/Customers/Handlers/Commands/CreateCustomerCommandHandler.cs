@@ -9,8 +9,8 @@ namespace LawyerAssistant.Application.Features.Identities.Customers.Handlers.Com
 
 public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, SysResult>
 {
-    private readonly IRepository<CustomersEntity> _repository;
-    public CreateCustomerCommandHandler(IRepository<CustomersEntity> repository)
+    private readonly IRepository<CustomersModel> _repository;
+    public CreateCustomerCommandHandler(IRepository<CustomersModel> repository)
     {
         _repository = repository;
     }
@@ -21,7 +21,7 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
 
         if (mobileNumberExists != null) throw new CustomException(SystemCommonMessage.MobileNumberIsDeplicated);
 
-        var customer = new CustomersEntity(model.MobileNumber, model.FirstName, model.LastName, model.NationalCode, model.BirthDate, model.Address, model.CityId, model.ProvinceId);
+        var customer = new CustomersModel(model.MobileNumber, model.FirstName, model.LastName, model.NationalCode, model.BirthDate, model.Address, model.CityId, model.ProvinceId);
 
         customer.RegDateAdd();
 

@@ -17,7 +17,8 @@ namespace LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels
             ProvinceId = provinceId;
             IsActive = true;
             RegDateTime = DateTime.UtcNow;
-            Customers = new HashSet<CustomersEntity>();
+            Customers = new HashSet<CustomersModel>();
+            Complexes = new HashSet<ComplexesModel>();
         }
 
         public void Edit(string name, int provinceId)
@@ -47,7 +48,7 @@ namespace LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels
         /// </summary>
         public int ProvinceId { get; set; }
         public ProvincesModel Province { get; set; }
-
-        public ICollection<CustomersEntity> Customers { get; set; }
+        public ICollection<ComplexesModel> Complexes { get; set; }
+        public ICollection<CustomersModel> Customers { get; set; }
     }
 }

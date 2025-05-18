@@ -10,15 +10,16 @@ public class DemandsModel : ModifyDateTimeWithUserModel, IEntity
 
     }
 
-    public DemandsModel(string name, int fileId)
+    public DemandsModel(string name, int filetypeId)
     {
         Name = name;
-        FileId = fileId;
+        FileTypeId = filetypeId;
     }
 
-    public void Edit(string name)
+    public void Edit(string name, int filetypeId)
     {
         Name = name;
+        FileTypeId = filetypeId;
     }
     //===========================================================
     /// <summary>
@@ -26,6 +27,6 @@ public class DemandsModel : ModifyDateTimeWithUserModel, IEntity
     /// </summary>
     public string Name { get; set; }
 
-    public int FileId { get; set; }
+    public int FileTypeId { get; set; }
     public FilesTypesModel FilesType { get; set; }
 }

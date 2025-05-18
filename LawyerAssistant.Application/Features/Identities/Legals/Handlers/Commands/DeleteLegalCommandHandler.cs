@@ -10,12 +10,12 @@ namespace LawyerAssistant.Application.Features.Identities.Legals.Handlers.Comman
 
 public class DeleteLegalCustomerCommandHandler : IRequestHandler<DeleteLegalCustomerCommand, SysResult>
 {
-    private readonly IRepository<LegalCustomersEntity> _legalRepository;
-    private readonly IRepository<CustomersEntity> _customerRepository;
+    private readonly IRepository<LegalCustomersModel> _legalRepository;
+    private readonly IRepository<CustomersModel> _customerRepository;
 
     public DeleteLegalCustomerCommandHandler(
-        IRepository<LegalCustomersEntity> legalRepository,
-        IRepository<CustomersEntity> customerRepository)
+        IRepository<LegalCustomersModel> legalRepository,
+        IRepository<CustomersModel> customerRepository)
     {
         _legalRepository = legalRepository;
         _customerRepository = customerRepository;

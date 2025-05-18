@@ -10,9 +10,9 @@ namespace LawyerAssistant.Application.Features.Identities.Legals.Handlers;
 
 public class GetLegalCustomersQueryHandler : IRequestHandler<GetLegalsQuery, SysResult<PagingResponse<GetLegalCustomersDTO>>>
 {
-    private readonly IRepository<LegalCustomersEntity> _repository;
+    private readonly IRepository<LegalCustomersModel> _repository;
 
-    public GetLegalCustomersQueryHandler(IRepository<LegalCustomersEntity> repository)
+    public GetLegalCustomersQueryHandler(IRepository<LegalCustomersModel> repository)
     {
         _repository = repository;
     }

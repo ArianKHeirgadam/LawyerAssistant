@@ -11,8 +11,8 @@ namespace LawyerAssistant.Application.Features.Identities.Users.Handlers;
 
 public class LoginCommandHandler : IRequestHandler<LoginCommand, SysResult<UserDTO>>
 {
-    private readonly IRepository<UsersEntity> _repository;
-    public LoginCommandHandler(IRepository<UsersEntity> repository)
+    private readonly IRepository<UsersModel> _repository;
+    public LoginCommandHandler(IRepository<UsersModel> repository)
     {
         _repository = repository;
     }

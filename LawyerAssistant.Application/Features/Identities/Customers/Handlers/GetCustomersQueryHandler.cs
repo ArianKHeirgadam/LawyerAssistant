@@ -12,9 +12,9 @@ namespace LawyerAssistant.Application.Features.Identities.Customers.Handlers;
 
 public class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, SysResult<PagingResponse<GetCustomersDTO>>>
 {
-    private readonly IRepository<CustomersEntity> _repository;
+    private readonly IRepository<CustomersModel> _repository;
     private readonly IOptions<AppConfig> _options;
-    public GetCustomersQueryHandler(IRepository<CustomersEntity> repository, IOptions<AppConfig> options)
+    public GetCustomersQueryHandler(IRepository<CustomersModel> repository, IOptions<AppConfig> options)
     {
         _repository = repository;
         _options = options;

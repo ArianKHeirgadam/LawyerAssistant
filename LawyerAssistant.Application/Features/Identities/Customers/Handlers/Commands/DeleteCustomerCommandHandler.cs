@@ -9,9 +9,9 @@ namespace LawyerAssistant.Application.Features.Identities.Customers.Handlers.Com
 
 public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, SysResult>
 {
-    private readonly IRepository<CustomersEntity> _repository;
+    private readonly IRepository<CustomersModel> _repository;
 
-    public DeleteCustomerCommandHandler(IRepository<CustomersEntity> repository)
+    public DeleteCustomerCommandHandler(IRepository<CustomersModel> repository)
     {
         _repository = repository;
     }

@@ -23,5 +23,10 @@ public static class SystemCommonMessage
     public static string DataWasNotRecordedDueToAnError { get; set; } = "اطلاعات به علت خطا ثبت نشد";
     public static string CantRemoveBecauseThereIsDependy { get; set; } = "به دلیل وجو وابستگی عملیات با شکست مواجه شد.";
     public static string AmountEnteredIsNotCorrect { get; set; } // "مبلغ وارد شده صحیح نمی باشد";
+    public static string CityIsNotFound { get; set; } = "شهر وارد شده یافت نشد";
+    public static string ProvicneIsNotFound { get; set; } = "استان وارد شده یافت نشد";
+    public static string ComplexeIsNotFound { get; set; } = "مجتمع وارد شده یافت نشد";
+    public static string BrachnIsNotFound { get; set; } = "شعبه وارد شده یافت نشد";
+
 
 }

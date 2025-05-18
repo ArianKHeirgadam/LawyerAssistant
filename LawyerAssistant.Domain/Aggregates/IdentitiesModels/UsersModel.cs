@@ -5,15 +5,15 @@ using LawyerAssistant.Domain.Base.Contracts;
 
 namespace Domain.Aggregates.Identities;
 
-public class UsersEntity : ModifyDateTimeWithUserModel, IEntity
+public class UsersModel : ModifyDateTimeWithUserModel, IEntity
 {
     #region Methods
-    protected UsersEntity()
+    protected UsersModel()
     {
         
     }
 
-    public UsersEntity(int id , string username,string firstName, string lastName, string passwordHash, bool gender, string picPath, UserRole role)
+    public UsersModel(int id , string username,string firstName, string lastName, string passwordHash, bool gender, string picPath, UserRole role)
     {
         Id = id;
         UserName = username;

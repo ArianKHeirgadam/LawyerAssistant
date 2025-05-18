@@ -22,7 +22,7 @@ namespace LawyerAssistant.Persistance.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Aggregates.Identities.CustomersEntity", b =>
+            modelBuilder.Entity("Domain.Aggregates.Identities.CustomersModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -90,7 +90,7 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.ToTable("Customers", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Aggregates.Identities.UsersEntity", b =>
+            modelBuilder.Entity("Domain.Aggregates.Identities.UsersModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -157,6 +157,59 @@ namespace LawyerAssistant.Persistance.Migrations
                         });
                 });
 
+            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ActionsModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("ModDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RegDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RememberTime")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Actions", (string)null);
+                });
+
+            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.BranchesModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ComplexId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComplexId");
+
+                    b.ToTable("Branches", (string)null);
+                });
+
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.CitiesModel", b =>
                 {
                     b.Property<int>("Id")
@@ -186,6 +239,29 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.HasIndex("ProvinceId");
 
                     b.ToTable("Cities", (string)null);
+                });
+
+            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ComplexesModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.ToTable("Complexes", (string)null);
                 });
 
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.DemandsModel", b =>
@@ -265,7 +341,7 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.ToTable("Provinces", (string)null);
                 });
 
-            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.IdentitiesModels.LegalCustomersEntity", b =>
+            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.IdentitiesModels.LegalCustomersModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -299,14 +375,14 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.ToTable("LegalCustomers", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Aggregates.Identities.CustomersEntity", b =>
+            modelBuilder.Entity("Domain.Aggregates.Identities.CustomersModel", b =>
                 {
                     b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.CitiesModel", "City")
                         .WithMany("Customers")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("LawyerAssistant.Domain.Aggregates.IdentitiesModels.LegalCustomersEntity", "Legal")
+                    b.HasOne("LawyerAssistant.Domain.Aggregates.IdentitiesModels.LegalCustomersModel", "Legal")
                         .WithMany("CompanyCustomers")
                         .HasForeignKey("LegalCompanyId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -323,6 +399,17 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.Navigation("Province");
                 });
 
+            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.BranchesModel", b =>
+                {
+                    b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ComplexesModel", "Complexe")
+                        .WithMany("Branches")
+                        .HasForeignKey("ComplexId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Complexe");
+                });
+
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.CitiesModel", b =>
                 {
                     b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ProvincesModel", "Province")
@@ -332,6 +419,17 @@ namespace LawyerAssistant.Persistance.Migrations
                         .IsRequired();
 
                     b.Navigation("Province");
+                });
+
+            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ComplexesModel", b =>
+                {
+                    b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.CitiesModel", "City")
+                        .WithMany("Complexes")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.DemandsModel", b =>
@@ -347,7 +445,14 @@ namespace LawyerAssistant.Persistance.Migrations
 
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.CitiesModel", b =>
                 {
+                    b.Navigation("Complexes");
+
                     b.Navigation("Customers");
+                });
+
+            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ComplexesModel", b =>
+                {
+                    b.Navigation("Branches");
                 });
 
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.FilesTypesModel", b =>
@@ -362,7 +467,7 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.Navigation("Customers");
                 });
 
-            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.IdentitiesModels.LegalCustomersEntity", b =>
+            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.IdentitiesModels.LegalCustomersModel", b =>
                 {
                     b.Navigation("CompanyCustomers");
                 });

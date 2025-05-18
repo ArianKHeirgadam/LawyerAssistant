@@ -4,12 +4,12 @@ using LawyerAssistant.Domain.Base;
 
 namespace LawyerAssistant.Domain.Aggregates.IdentitiesModels;
 
-public class LegalCustomersEntity : ModifyDateTimeModel, IEntity
+public class LegalCustomersModel : ModifyDateTimeModel, IEntity
 {
     #region Methods
 
   
-    protected LegalCustomersEntity()
+    protected LegalCustomersModel()
     {
     }
 
@@ -19,12 +19,12 @@ public class LegalCustomersEntity : ModifyDateTimeModel, IEntity
     /// <param name="companyName">نام شرکت حقوقی</param>
     /// <param name="legalNationalCode">کد ملی حقوقی</param>
     /// <param name="address">آدرس شرکت</param>
-    public LegalCustomersEntity(string companyName, string legalNationalCode, string address)
+    public LegalCustomersModel(string companyName, string legalNationalCode, string address)
     {
         CompanyName = companyName;
         LegalNationalCode = legalNationalCode;
         Address = address;
-        CompanyCustomers = new HashSet<CustomersEntity>();
+        CompanyCustomers = new HashSet<CustomersModel>();
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public class LegalCustomersEntity : ModifyDateTimeModel, IEntity
     /// <summary>
     /// لیست مشتریان حقیقی مرتبط با این شرکت حقوقی
     /// </summary>
-    public ICollection<CustomersEntity> CompanyCustomers { get; set; }
+    public ICollection<CustomersModel> CompanyCustomers { get; set; }
 
     #endregion
 
