@@ -112,6 +112,10 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
     /// شناسه مشتری.
     /// </summary>
     public int CustomerId { get; set; }
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    /// <summary>
+    /// انجام شده یا نشده.
+    /// </summary>
     public bool IsCompleted { get; set; }
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -119,6 +123,10 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
     /// شناسه نوع پرونده.
     /// </summary>
     public int FileTypeId { get; set; }
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    /// <summary>
+    /// نوع قدام
+    /// </summary>
     public int ActionTypeId { get; set; }
     public ActionTypesModel ActionType { get; set; }
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -141,5 +149,6 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
     /// مدل شعبه مربوطه.
     /// </summary>
     public BranchesModel? Branch { get; set; }
+    public int MyProperty { get; set; }
     #endregion
 }

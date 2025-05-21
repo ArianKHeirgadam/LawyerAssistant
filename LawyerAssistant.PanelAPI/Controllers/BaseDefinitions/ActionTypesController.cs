@@ -1,5 +1,6 @@
 ﻿using LawyerAssistant.Application.Features.BaseDefinitions.ActionTypes.Commands;
 using LawyerAssistant.Application.Features.BaseDefinitions.ActionTypes.Queries;
+using LawyerAssistant.Application.Features.BaseDefinitions.Demands.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,12 @@ public class ActionTypesController : ControllerBase
     public async Task<IActionResult> Get(int id)
     {
         var result = await _sender.Send(new GetActionTypesByIdQuery() { Id = id });
+        return Ok(result);
+    }
+    [HttpGet("select-box")]
+    public async Task<IActionResult> GetSelectBox([FromQuery] GetActionTypesListQuery query)
+    {
+        var result = await _sender.Send(query);
         return Ok(result);
     }
     #endregion

@@ -1,5 +1,6 @@
 ﻿using LawyerAssistant.Application.Features.BaseDefinitions.Branches.Commands;
 using LawyerAssistant.Application.Features.BaseDefinitions.Branches.Queries;
+using LawyerAssistant.Application.Features.BaseDefinitions.Demands.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,12 @@ public class BranchesController : ControllerBase
     public async Task<IActionResult> Get(int id)
     {
         var result = await _sender.Send(new GetBranchByIdQuery() { Id = id });
+        return Ok(result);
+    }
+    [HttpGet("select-box")]
+    public async Task<IActionResult> GetSelectBox([FromQuery] GetBranchesListQuery query)
+    {
+        var result = await _sender.Send(query);
         return Ok(result);
     }
     #endregion

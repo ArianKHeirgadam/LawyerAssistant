@@ -1,5 +1,6 @@
 ﻿using LawyerAssistant.Application.Features.BaseDefinitions.Complexes.Commands;
 using LawyerAssistant.Application.Features.BaseDefinitions.Complexes.Queries;
+using LawyerAssistant.Application.Features.BaseDefinitions.Demands.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,12 @@ public class ComplexesController : ControllerBase
     public async Task<IActionResult> Get(int id)
     {
         var result = await _sender.Send(new GetComplexByIdQuery() { Id = id });
+        return Ok(result);
+    }
+    [HttpGet("select-box")]
+    public async Task<IActionResult> GetSelectBox([FromQuery] GetComplexesListQuery query)
+    {
+        var result = await _sender.Send(query);
         return Ok(result);
     }
     #endregion
