@@ -14,6 +14,7 @@ public class ComplexesModel : IdentifierModel, IEntity
         Title = title;
         CityId = cityId;
         Branches = new HashSet<BranchesModel>();
+        Reactions = new HashSet<ReActionModel>();
     }
 
     public void Edit(string title, int cityId)
@@ -34,4 +35,5 @@ public class ComplexesModel : IdentifierModel, IEntity
     public int CityId { get; set; }
     public CitiesModel City { get; set; }
     public ICollection<BranchesModel> Branches { get; set; }
+    public ICollection<ReActionModel> Reactions { get; set; }
 }

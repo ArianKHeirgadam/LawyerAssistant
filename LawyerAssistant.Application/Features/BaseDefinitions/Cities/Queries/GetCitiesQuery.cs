@@ -8,4 +8,5 @@ namespace LawyerAssistant.Application.Features.BaseDefinitions.Cities.Queries;
 public class GetCitiesQuery : PagingRequest, IRequest<SysResult<PagingResponse<GetCityDTO>>>
 {
     public string? Title { get; set; }
+    public int? ProvinceId { get; set; }
 }

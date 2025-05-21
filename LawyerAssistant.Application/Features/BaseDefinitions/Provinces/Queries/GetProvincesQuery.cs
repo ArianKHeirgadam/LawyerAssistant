@@ -1,5 +1,4 @@
 ﻿using LawyerAssistant.Application.DTOs.Base;
-using LawyerAssistant.Application.DTOs.BaseDefinitions;
 using LawyerAssistant.Application.Objects;
 using MediatR;
 

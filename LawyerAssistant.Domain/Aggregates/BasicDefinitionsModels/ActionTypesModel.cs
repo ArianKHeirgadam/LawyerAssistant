@@ -44,4 +44,7 @@ public class ActionTypesModel : ModifyDateTimeWithUserModel, IEntity
     ///   زمان یادآوری به ساعت 24 یا 72 
     /// </summary>
     public int RememberTime { get; set; }
+
+    public ICollection<ReActionModel> Reactions { get; set; }
+
 }

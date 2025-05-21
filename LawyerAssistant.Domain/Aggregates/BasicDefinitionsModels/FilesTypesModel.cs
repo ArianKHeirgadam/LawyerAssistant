@@ -14,6 +14,7 @@ public class FilesTypesModel : ModifyDateTimeWithUserModel, IEntity
     {
         Name = name;
         Demands = new HashSet<DemandsModel>();
+        Reactions = new HashSet<ReActionModel>();
     }
 
     public void Edit(string name)
@@ -26,4 +27,5 @@ public class FilesTypesModel : ModifyDateTimeWithUserModel, IEntity
     /// </summary>
     public string Name { get; set; }
     public ICollection<DemandsModel> Demands { get; set; }
+    public ICollection<ReActionModel> Reactions { get; set; }
 }

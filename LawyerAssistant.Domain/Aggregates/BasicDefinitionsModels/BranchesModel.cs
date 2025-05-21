@@ -35,4 +35,6 @@ public class BranchesModel : IdentifierModel , IEntity
     /// </summary>
     public int ComplexId { get; set; }
     public ComplexesModel Complexe { get; set; }
+    public ICollection<ReActionModel> Reactions { get; set; }
+
 }

@@ -30,7 +30,7 @@ public class GetCityByIdQueryHandler : IRequestHandler<GetCityByIdQuery, SysResu
             {
                 Id = city.Id,
                 Title = city.Name,
-                Province = new GenericDTO() { Id = city.Province.Id, Title = city.Province.Name }
+                //Province = new GenericDTO() { Id = city.Province.Id, Title = city.Province.Name }
             }
         };
     }

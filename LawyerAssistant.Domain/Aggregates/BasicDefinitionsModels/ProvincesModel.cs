@@ -1,11 +1,13 @@
 ﻿using Domain.Aggregates.Identities;
+using LawyerAssistant.Domain.Base;
 using LawyerAssistant.Domain.Base.Contracts;
 
 namespace LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels
 {
-    public class ProvincesModel : IEntity
+    public class ProvincesModel : IdentifierModel,  IEntity
     {
-        public Guid Id { get; set; }
+        
+        public bool IsActive { get; set; }
         //=======================================================
         /// <summary>
         /// 

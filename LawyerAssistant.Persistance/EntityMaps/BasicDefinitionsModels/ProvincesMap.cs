@@ -13,8 +13,6 @@ public class ProvincesMap : IEntityTypeConfiguration<ProvincesModel>
         entity.Property(c => c.Id).HasColumnType("int").ValueGeneratedOnAdd().IsRequired();
         entity.Property(c => c.IsActive).HasColumnType("bit").IsRequired();
         entity.Property(c => c.Name).HasColumnType("nvarchar(50)").IsRequired();
-        entity.Property(c => c.RegDateTime).HasColumnType("datetime").IsRequired();
-        entity.Property(c => c.ModDateTime).HasColumnType("datetime");
         entity.HasMany(c => c.Cities).WithOne(c => c.Province).HasForeignKey(c => c.ProvinceId).OnDelete(DeleteBehavior.Restrict);
 
         //============================================================================ارتباطات

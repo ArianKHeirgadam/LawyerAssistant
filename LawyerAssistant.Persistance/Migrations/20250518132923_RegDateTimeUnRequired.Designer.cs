@@ -4,6 +4,7 @@ using LawyerAssistant.Persistance.ApplicationDbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerAssistant.Persistance.Migrations
 {
     [DbContext(typeof(MainDBContext))]
-    partial class MainDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250518132923_RegDateTimeUnRequired")]
+    partial class RegDateTimeUnRequired
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -363,62 +366,6 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.ToTable("LegalCustomers", (string)null);
                 });
 
-            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.ReActionModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ActionTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BranchId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ComplexeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FileTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("GoingToBranch")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModDateTime")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime>("RegDateTime")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime?>("Time")
-                        .HasColumnType("datetime");
-
-                    b.Property<bool>("TimeIsImportant")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActionTypeId");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("ComplexeId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("FileTypeId");
-
-                    b.ToTable("ReActions", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Aggregates.Identities.CustomersModel", b =>
                 {
                     b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.CitiesModel", "City")
@@ -487,62 +434,6 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.Navigation("FilesType");
                 });
 
-            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.ReActionModel", b =>
-                {
-                    b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ActionTypesModel", "ActionType")
-                        .WithMany("Reactions")
-                        .HasForeignKey("ActionTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.BranchesModel", "Branch")
-                        .WithMany("Reactions")
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ComplexesModel", "Complexe")
-                        .WithMany("Reactions")
-                        .HasForeignKey("ComplexeId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Domain.Aggregates.Identities.CustomersModel", "Customer")
-                        .WithMany("Reactions")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.FilesTypesModel", "FilesTypes")
-                        .WithMany("Reactions")
-                        .HasForeignKey("FileTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ActionType");
-
-                    b.Navigation("Branch");
-
-                    b.Navigation("Complexe");
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("FilesTypes");
-                });
-
-            modelBuilder.Entity("Domain.Aggregates.Identities.CustomersModel", b =>
-                {
-                    b.Navigation("Reactions");
-                });
-
-            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ActionTypesModel", b =>
-                {
-                    b.Navigation("Reactions");
-                });
-
-            modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.BranchesModel", b =>
-                {
-                    b.Navigation("Reactions");
-                });
-
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.CitiesModel", b =>
                 {
                     b.Navigation("Complexes");
@@ -553,15 +444,11 @@ namespace LawyerAssistant.Persistance.Migrations
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ComplexesModel", b =>
                 {
                     b.Navigation("Branches");
-
-                    b.Navigation("Reactions");
                 });
 
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.FilesTypesModel", b =>
                 {
                     b.Navigation("Demands");
-
-                    b.Navigation("Reactions");
                 });
 
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.ProvincesModel", b =>

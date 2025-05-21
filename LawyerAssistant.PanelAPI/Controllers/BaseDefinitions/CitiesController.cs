@@ -31,25 +31,4 @@ public class CitiesController : ControllerBase
     }
     #endregion
 
-    #region Commands
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateCityCommand command)
-    {
-        var result = await _sender.Send(command);
-        return Ok(result);
-    }
-
-    [HttpPut]
-    public async Task<IActionResult> Update([FromBody] UpdateCityCommand command)
-    {
-        var result = await _sender.Send(command);
-        return Ok(result);
-    }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var result = await _sender.Send(new DeleteCityCommand() { Id = id });
-        return Ok(result);
-    }
-    #endregion
 }

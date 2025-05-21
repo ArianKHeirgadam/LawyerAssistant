@@ -1,4 +1,5 @@
 ﻿using Domain.Base.Enums;
+using LawyerAssistant.Domain.Aggregates;
 using LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels;
 using LawyerAssistant.Domain.Aggregates.IdentitiesModels;
 using LawyerAssistant.Domain.Base;
@@ -122,7 +123,7 @@ namespace Domain.Aggregates.Identities
         public CitiesModel City { get; set; }
         public ProvincesModel Province { get; set; }
         public LegalCustomersModel? Legal { get; set; }
-
+        public ICollection<ReActionModel> Reactions { get; set; }
         #endregion
     }
 }

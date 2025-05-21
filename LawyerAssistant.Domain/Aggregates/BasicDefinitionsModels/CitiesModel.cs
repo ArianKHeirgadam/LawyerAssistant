@@ -4,7 +4,7 @@ using LawyerAssistant.Domain.Base.Contracts;
 
 namespace LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels
 {
-    public class CitiesModel : ModifyDateTimeWithUserModel, IEntity
+    public class CitiesModel : IdentifierModel, IEntity
     {
         protected CitiesModel()
         {
@@ -16,7 +16,6 @@ namespace LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels
             Name = name;
             ProvinceId = provinceId;
             IsActive = true;
-            RegDateTime = DateTime.UtcNow;
             Customers = new HashSet<CustomersModel>();
             Complexes = new HashSet<ComplexesModel>();
         }
@@ -25,7 +24,6 @@ namespace LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels
         {
             Name = name;
             ProvinceId = provinceId;
-            ModDateTime = DateTime.UtcNow;
         }
 
         public void ChangeActivation(bool isActive)

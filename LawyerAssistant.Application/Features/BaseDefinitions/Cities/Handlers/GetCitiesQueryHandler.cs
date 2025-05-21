@@ -19,19 +19,20 @@ public class GetCitiesQueryHandler : IRequestHandler<GetCitiesQuery, SysResult<P
     }
     public async Task<SysResult<PagingResponse<GetCityDTO>>> Handle(GetCitiesQuery request, CancellationToken cancellationToken)
     {
-        var result =  await _repository.Where(c => !string.IsNullOrEmpty(request.Title) ? c.Name.Contains(request.Title) : true)
-            .Include(c => c.Province)
-            .Select(c => new GetCityDTO
+        var result = await _repository
+            .Where(c => !string.IsNullOrEmpty(request.Title) ? c.Name.Contains(request.Title) : true)
+            .Where(c =>  request.ProvinceId != null && request.ProvinceId != 0 ? c.ProvinceId == request.ProvinceId : true)
+            .Include(c => c.Province).Select(c => new GetCityDTO
             {
                 Id = c.Id,
                 Title = c.Name,
-                Province = new GenericDTO() { Id = c.Province.Id, Title = c.Province.Name }
+                //Province = new GenericDTO() { Id = c.Province.Id, Title = c.Province.Name }
             }).ToPagedListAsync(request.PageNumber, request.PageSize);
 
 
         return new SysResult<PagingResponse<GetCityDTO>>
         {
-            IsSuccess = true,   
+            IsSuccess = true,
             Message = SystemCommonMessage.OperationDoneSuccessfully,
             Value = result
         };
