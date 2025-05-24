@@ -8,7 +8,7 @@ using MediatR;
 
 namespace LawyerAssistant.Application.Features.Identities.Legals.Handlers.Commands;
 
-public class UpdateLegalCustomerCommandHandler : IRequestHandler<UpdateLegalCustomerCommand, SysResult>
+public class UpdateLegalCustomerCommandHandler : IRequestHandler<UpdateLegalCommand, SysResult>
 {
     private readonly IRepository<LegalCustomersModel> _legalRepository;
     private readonly IRepository<CustomersModel> _customerRepository;
@@ -21,7 +21,7 @@ public class UpdateLegalCustomerCommandHandler : IRequestHandler<UpdateLegalCust
         _customerRepository = customerRepository;
     }
 
-    public async Task<SysResult> Handle(UpdateLegalCustomerCommand model, CancellationToken cancellationToken)
+    public async Task<SysResult> Handle(UpdateLegalCommand model, CancellationToken cancellationToken)
     {
         var legal = await _legalRepository.FirstOrDefaultAsync(c => c.Id == model.Id);
         if (legal == null)

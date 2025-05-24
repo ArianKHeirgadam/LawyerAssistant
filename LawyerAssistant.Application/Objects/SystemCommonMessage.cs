@@ -27,6 +27,7 @@ public static class SystemCommonMessage
     public static string ProvicneIsNotFound { get; set; } = "استان وارد شده یافت نشد";
     public static string ComplexeIsNotFound { get; set; } = "مجتمع وارد شده یافت نشد";
     public static string BrachnIsNotFound { get; set; } = "شعبه وارد شده یافت نشد";
+    public static string ReactionIsNotFound { get; set; } = "اقدامات وارد شده یافت نشد";
 
 
 }

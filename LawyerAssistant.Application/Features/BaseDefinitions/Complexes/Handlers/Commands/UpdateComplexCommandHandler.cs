@@ -10,10 +10,12 @@ namespace LawyerAssistant.Application.Features.BaseDefinitions.Complexes.Handler
 public class UpdateComplexCommandHandler : IRequestHandler<UpdateComplexCommand, SysResult>
 {
     private readonly IRepository<ComplexesModel> _repository;
+    private readonly IRepository<CitiesModel> _cityRepository;
 
-    public UpdateComplexCommandHandler(IRepository<ComplexesModel> repository)
+    public UpdateComplexCommandHandler(IRepository<ComplexesModel> repository, IRepository<CitiesModel> cityRepository)
     {
         _repository = repository;
+        _cityRepository = cityRepository;
     }
 
     public async Task<SysResult> Handle(UpdateComplexCommand request, CancellationToken cancellationToken)
@@ -41,7 +43,7 @@ public class UpdateComplexCommandHandler : IRequestHandler<UpdateComplexCommand,
             throw new CustomException(SystemCommonMessage.ComplexeIsNotFound);
 
 
-        var city = await _repository.FirstOrDefaultAsync(b => b.Id == request.CityId);
+        var city = await _cityRepository.FirstOrDefaultAsync(b => b.Id == request.CityId);
 
         if (city is null) throw new CustomException(SystemCommonMessage.CityIsNotFound);
 

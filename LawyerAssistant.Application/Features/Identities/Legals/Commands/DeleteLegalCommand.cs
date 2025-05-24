@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LawyerAssistant.Application.Features.Identities.Legals.Commands;
 
-public class DeleteLegalCustomerCommand : IRequest<SysResult>
+public class DeleteLegalCommand : IRequest<SysResult>
 {
     [Required(ErrorMessage = ValidationCommonMessages.Required)]
     public int Id { get; set; }

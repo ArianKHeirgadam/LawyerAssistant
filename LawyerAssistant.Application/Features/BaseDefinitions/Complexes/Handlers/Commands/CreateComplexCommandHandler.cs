@@ -35,7 +35,7 @@ public class CreateComplexCommandHandler : IRequestHandler<CreateComplexCommand,
 
     public async Task ValidateCity(int cityId)
     {
-        var city = await _repository.FirstOrDefaultAsync(b => b.Id == cityId);
+        var city = await _cityRepository.FirstOrDefaultAsync(b => b.Id == cityId);
 
         if (city is null) throw new CustomException(SystemCommonMessage.CityIsNotFound);
     }
