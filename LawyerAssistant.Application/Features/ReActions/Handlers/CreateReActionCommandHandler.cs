@@ -22,7 +22,7 @@ public class CreateReActionCommandHandler : IRequestHandler<CreateReActionComman
             complexeId: dto.ComplexeId,
             date: dto.Time,
             customerId: dto.CustomerId,
-            fileTypeId: dto.FileTypeId
+            fileId: dto.FileTypeId
         );
 
         await _repository.AddAsync(reAction);

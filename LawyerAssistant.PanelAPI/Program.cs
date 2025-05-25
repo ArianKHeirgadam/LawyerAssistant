@@ -3,6 +3,7 @@ using LawyerAssistant.Application;
 using LawyerAssistant.Application.Contracts.Common;
 using LawyerAssistant.Application.Extentions;
 using LawyerAssistant.Application.Objects;
+using LawyerAssistant.PanelAPI;
 using LawyerAssistant.Persistance;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -118,12 +119,13 @@ builder.Services.AddAuthentication(x =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
 
+//}
+app.UseMiddleware<CustomExceptionMiddleware>();
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

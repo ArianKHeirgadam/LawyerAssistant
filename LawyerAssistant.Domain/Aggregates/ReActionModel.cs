@@ -25,7 +25,7 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
         int? complexeId,
         DateTime? date,
         int customerId,
-        int fileTypeId)
+        int fileId)
     {
         ActionTypeId = actionTypeId;
         Time = date;
@@ -34,7 +34,7 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
         BranchId = branchId;
         ComplexeId = complexeId;
         CustomerId = customerId;
-        FileTypeId = fileTypeId;
+        FileId = fileId;
         RegDateTime = DateTime.UtcNow;
         IsCompleted = false;
     }
@@ -51,7 +51,7 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
         int? complexeId,
         DateTime? date,
         int customerId,
-        int fileTypeId)
+        int fileId)
     {
         ActionTypeId = actionTypeId;
         Time = date;
@@ -61,7 +61,7 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
         BranchId = branchId;
         ComplexeId = complexeId;
         CustomerId = customerId;
-        FileTypeId = fileTypeId;
+        FileId = fileId;
         ModDateTime = DateTime.UtcNow;
     }
     public void IsComplete(bool isCompleete)
@@ -122,7 +122,7 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
     /// <summary>
     /// شناسه نوع پرونده.
     /// </summary>
-    public int FileTypeId { get; set; }
+    public int FileId { get; set; }
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     /// <summary>
     /// نوع قدام
@@ -133,7 +133,7 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
     /// <summary>
     /// مدل نوع فایل مربوطه.
     /// </summary>
-    public FilesTypesModel FilesTypes { get; set; }
+    public FilesModel Files { get; set; }
 
     /// <summary>
     /// مدل مجتمع مربوطه.
@@ -149,6 +149,5 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
     /// مدل شعبه مربوطه.
     /// </summary>
     public BranchesModel? Branch { get; set; }
-    public int MyProperty { get; set; }
     #endregion
 }

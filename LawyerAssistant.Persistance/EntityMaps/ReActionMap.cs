@@ -31,7 +31,7 @@ public class ReActionMap : IEntityTypeConfiguration<ReActionModel>
         builder.Property(x => x.CustomerId)
             .IsRequired();
 
-        builder.Property(x => x.FileTypeId)
+        builder.Property(x => x.FileId)
             .IsRequired();
 
         builder.HasOne(x => x.Customer)
@@ -49,9 +49,9 @@ public class ReActionMap : IEntityTypeConfiguration<ReActionModel>
             .HasForeignKey(x => x.ComplexeId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(x => x.FilesTypes)
+        builder.HasOne(x => x.Files)
             .WithMany(c => c.Reactions)
-            .HasForeignKey(x => x.FileTypeId)
+            .HasForeignKey(x => x.FileId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.ActionType)

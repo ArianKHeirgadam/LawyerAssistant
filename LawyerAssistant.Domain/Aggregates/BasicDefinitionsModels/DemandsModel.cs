@@ -29,4 +29,5 @@ public class DemandsModel : ModifyDateTimeWithUserModel, IEntity
 
     public int FileTypeId { get; set; }
     public FilesTypesModel FilesType { get; set; }
+    public ICollection<FilesModel> Files { get; set; }
 }

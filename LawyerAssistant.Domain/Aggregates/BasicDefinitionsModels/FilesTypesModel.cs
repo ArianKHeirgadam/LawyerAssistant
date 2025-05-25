@@ -13,6 +13,7 @@ public class FilesTypesModel : ModifyDateTimeWithUserModel, IEntity
     public FilesTypesModel(string name)
     {
         Name = name;
+        RegDateTime = DateTime.UtcNow;
         Demands = new HashSet<DemandsModel>();
         Reactions = new HashSet<ReActionModel>();
     }
@@ -20,6 +21,7 @@ public class FilesTypesModel : ModifyDateTimeWithUserModel, IEntity
     public void Edit(string name)
     {
         Name = name;
+        ModDateTime = DateTime.UtcNow;
     }
     //===========================================================
     /// <summary>
@@ -28,4 +30,5 @@ public class FilesTypesModel : ModifyDateTimeWithUserModel, IEntity
     public string Name { get; set; }
     public ICollection<DemandsModel> Demands { get; set; }
     public ICollection<ReActionModel> Reactions { get; set; }
+    public ICollection<FilesModel> Files { get; set; }
 }

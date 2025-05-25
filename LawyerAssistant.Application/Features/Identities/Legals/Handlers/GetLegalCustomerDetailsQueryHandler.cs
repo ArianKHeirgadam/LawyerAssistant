@@ -1,5 +1,6 @@
 ﻿using Application.Exceptions;
 using LawyerAssistant.Application.Contracts.Persistence;
+using LawyerAssistant.Application.DTOs.Base;
 using LawyerAssistant.Application.DTOs.Identities;
 using LawyerAssistant.Application.Features.Identities.Legals.Queries;
 using LawyerAssistant.Application.Objects;
@@ -28,12 +29,13 @@ public class GetLegalCustomerDetailsQueryHandler : IRequestHandler<GetLegalDetai
         var dto = new GetLegalCustomerDetailsDTO
         {
             Id = legal.Id,
+            Address = legal.Address,
             CompanyName = legal.CompanyName,
             LegalNationalCode = legal.LegalNationalCode,
-            Address = legal.Address,
-            CustomerNames = legal.CompanyCustomers
-                .Select(c => $"{c.FirstName} {c.LastName}")
-                .ToList()
+            Customers = legal.CompanyCustomers.Select(c => new GenericDTO { 
+                Id = c.Id,
+                Title = $"{c.FirstName} {c.LastName}"
+            }).ToList()
         };
 
         return new SysResult<GetLegalCustomerDetailsDTO>

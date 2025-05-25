@@ -1,14 +1,15 @@
-﻿using LawyerAssistant.Application.Features.Identities.Legals.Commands;
+﻿using LawyerAssistant.Application.Features.BaseDefinitions.FileTypes.Queries;
+using LawyerAssistant.Application.Features.Identities.Legals.Commands;
 using LawyerAssistant.Application.Features.Identities.Legals.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LawyerAssistant.PanelAPI.Controllers.BaseDefinitions;
+namespace LawyerAssistant.PanelAPI.Controllers.Identities;
 
 [Authorize]
 [ApiController]
-[Route("base/[controller]")]
+[Route("Identities/[controller]")]
 public class LegalController : ControllerBase
 {
     private readonly ISender _sender;
@@ -16,7 +17,7 @@ public class LegalController : ControllerBase
 
     #region Query
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] GetLegalDetailsQuery Query)
+    public async Task<IActionResult> Get([FromQuery] GetLegalsQuery Query)
     {
         var result = await _sender.Send(Query);
         return Ok(result);
@@ -26,6 +27,12 @@ public class LegalController : ControllerBase
     public async Task<IActionResult> Get(int id)
     {
         var result = await _sender.Send(new GetLegalDetailsQuery() { Id = id });
+        return Ok(result);
+    }
+    [HttpGet("select-box")]
+    public async Task<IActionResult> GetSelectBox([FromQuery] GetLegalsListQuery query)
+    {
+        var result = await _sender.Send(query);
         return Ok(result);
     }
     #endregion

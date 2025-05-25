@@ -124,6 +124,7 @@ namespace Domain.Aggregates.Identities
         public ProvincesModel Province { get; set; }
         public LegalCustomersModel? Legal { get; set; }
         public ICollection<ReActionModel> Reactions { get; set; }
+        public ICollection<FilesModel> Files { get; set; }
         #endregion
     }
 }

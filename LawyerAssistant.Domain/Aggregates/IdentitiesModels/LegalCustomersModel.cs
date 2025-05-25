@@ -64,7 +64,7 @@ public class LegalCustomersModel : ModifyDateTimeModel, IEntity
     /// لیست مشتریان حقیقی مرتبط با این شرکت حقوقی
     /// </summary>
     public ICollection<CustomersModel> CompanyCustomers { get; set; }
-
+    public ICollection<FilesModel> Files { get; set; }
     #endregion
 
 }
