@@ -8,7 +8,7 @@ public class SMSCenterMap : IEntityTypeConfiguration<SMSCenterModel>
 {
     public void Configure(EntityTypeBuilder<SMSCenterModel> builder)
     {
-        builder.ToTable("ReActions");
+        builder.ToTable("SMS");
 
         builder.HasKey(x => x.Id);
 

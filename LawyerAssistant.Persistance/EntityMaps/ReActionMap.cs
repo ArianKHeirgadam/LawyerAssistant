@@ -18,26 +18,15 @@ public class ReActionMap : IEntityTypeConfiguration<ReActionModel>
         builder.Property(x => x.GoingToBranch)
             .IsRequired();
 
-        builder.Property(x => x.Time)
-            .HasColumnType("datetime")
-            .IsRequired(false);
-
         builder.Property(x => x.BranchId)
             .IsRequired(false);
 
         builder.Property(x => x.ComplexeId)
             .IsRequired(false);
 
-        builder.Property(x => x.CustomerId)
-            .IsRequired();
 
         builder.Property(x => x.FileId)
             .IsRequired();
-
-        builder.HasOne(x => x.Customer)
-            .WithMany(c => c.Reactions)
-            .HasForeignKey(x => x.CustomerId)
-            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Branch)
             .WithMany(c => c.Reactions)

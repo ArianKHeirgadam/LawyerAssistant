@@ -24,7 +24,7 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
         bool isRemember,
         int? branchId,
         int? complexeId,
-        DateTime? visitDate,
+        DateTime visitDate,
         int fileId)
     {
         RememberTime = rememberTime;
@@ -53,7 +53,7 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
         bool isRemember,
         int? branchId,
         int? complexeId,
-        DateTime? visitDate,
+        DateTime visitDate,
         int fileId)
     {
         RememberTime = rememberTime;
