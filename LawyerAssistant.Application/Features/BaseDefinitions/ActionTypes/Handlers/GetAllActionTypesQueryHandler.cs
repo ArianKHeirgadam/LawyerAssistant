@@ -25,7 +25,6 @@ public class GetAllActionTypesQueryHandler : IRequestHandler<GetAllActionTypesQu
                 Id = a.Id,
                 Title = a.Title,
                 Priority = a.Priority,
-                RememberTime = a.RememberTime
             }).ToPagedListAsync(request.PageNumber, request.PageSize);
 
         return new SysResult<PagingResponse<ActionDto>>

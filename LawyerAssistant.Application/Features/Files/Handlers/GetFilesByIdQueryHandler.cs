@@ -30,25 +30,24 @@ public class GetFilesByIdQueryHandler : IRequestHandler<GetFilesByIdQuery, SysRe
 
         if (file == null) throw new CustomException(SystemCommonMessage.DataWasNotFound);
 
-        var dto = new FilesDetailsDto
-        {
-            Id = file.Id,
-            IsLegal = file.IsLegal,
-            Title = file.Title,
-            CustomerId = file.IsLegal ? null : (int?)file.CustomerId,
-            CustomerFullName = file.IsLegal && file.Customer ==null ? null : file.Customer.FirstName + " " + file.Customer.LastName,
-            LegalId = file.IsLegal ? (int?)file.LegalId : null,
-            LegalCompanyName = file.IsLegal ? file.Legal?.CompanyName : null,
-            DemandId = file.DemandId,
-            DemandTitle = file.Demand?.Name,
-            FileTypeId = file.FileTypeId,
-            FileTypeTitle = file.FilesTypes?.Name,
-        };
-
         return new SysResult<FilesDetailsDto>
         {
             IsSuccess = true,
-            Message = SystemCommonMessage.OperationDoneSuccessfully
+            Message = SystemCommonMessage.OperationDoneSuccessfully,
+            Value = new FilesDetailsDto
+            {
+                Id = file.Id,
+                IsLegal = file.IsLegal,
+                Title = file.Title,
+                CustomerId = file.IsLegal ? null : (int?)file.CustomerId,
+                CustomerFullName = file.IsLegal && file.Customer == null ? null : file.Customer.FirstName + " " + file.Customer.LastName,
+                LegalId = file.IsLegal ? (int?)file.LegalId : null,
+                LegalCompanyName = file.IsLegal ? file.Legal?.CompanyName : null,
+                DemandId = file.DemandId,
+                DemandTitle = file.Demand?.Name,
+                FileTypeId = file.FileTypeId,
+                FileTypeTitle = file.FilesTypes?.Name,
+            }
         };
     }
 }

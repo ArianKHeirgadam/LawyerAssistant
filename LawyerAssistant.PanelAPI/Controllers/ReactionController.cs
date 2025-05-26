@@ -8,7 +8,7 @@ namespace LawyerAssistant.PanelAPI.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("base/[controller]")]
+[Route("[controller]")]
 public class ReactionController : ControllerBase
 {
     private readonly ISender _sender;

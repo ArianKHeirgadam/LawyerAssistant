@@ -13,19 +13,19 @@ public class ActionTypesModel : ModifyDateTimeWithUserModel, IEntity
         
     }
 
-    public ActionTypesModel(string title , int priority , int rememberTime)
+    public ActionTypesModel(string title , int priority)
     {
         Title = title;
         Priority = priority;
-        RememberTime = rememberTime;
+        RegDateTime = DateTime.UtcNow;
     }
 
 
-    public void Edit(string title, int priority, int rememberTime)
+    public void Edit(string title, int priority)
     {
         Title = title;
         Priority = priority;
-        RememberTime = rememberTime;
+        ModDateTime = DateTime.UtcNow;
     }
 
     //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

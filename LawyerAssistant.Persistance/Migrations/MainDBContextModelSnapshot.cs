@@ -331,16 +331,19 @@ namespace LawyerAssistant.Persistance.Migrations
 
             modelBuilder.Entity("LawyerAssistant.Domain.Aggregates.FilesModel", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DemandId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("FileTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsLegal")
@@ -348,7 +351,7 @@ namespace LawyerAssistant.Persistance.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<int>("LegalId")
+                    b.Property<int?>("LegalId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ModDateTime")
@@ -361,9 +364,11 @@ namespace LawyerAssistant.Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("DemandId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("DemandId");
 
                     b.HasIndex("FileTypeId");
 
@@ -540,13 +545,12 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.HasOne("Domain.Aggregates.Identities.CustomersModel", "Customer")
                         .WithMany("Files")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.DemandsModel", "Demand")
                         .WithMany("Files")
                         .HasForeignKey("DemandId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels.FilesTypesModel", "FilesTypes")
@@ -558,8 +562,7 @@ namespace LawyerAssistant.Persistance.Migrations
                     b.HasOne("LawyerAssistant.Domain.Aggregates.IdentitiesModels.LegalCustomersModel", "Legal")
                         .WithMany("Files")
                         .HasForeignKey("LegalId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Customer");
 

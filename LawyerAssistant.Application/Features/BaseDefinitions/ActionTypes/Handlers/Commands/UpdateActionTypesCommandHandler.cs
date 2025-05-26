@@ -21,7 +21,7 @@ public class UpdateActionTypesCommandHandler : IRequestHandler<UpdateActionTypes
         var action = await _repository.FirstOrDefaultAsync(x => x.Id == request.Id);
         if (action == null) throw new CustomException(SystemCommonMessage.DataWasNotFound);
 
-        action.Edit(request.Title, request.Priority, request.RememberTime);
+        action.Edit(request.Title, request.Priority);
         await _repository.SaveChangesAsync();
 
         return new SysResult

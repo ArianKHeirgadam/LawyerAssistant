@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LawyerAssistant.Application.Objects;
+using System.ComponentModel.DataAnnotations;
 
 namespace LawyerAssistant.Application.DTOs;
 
@@ -7,28 +8,38 @@ public class CreateReActionDto : IValidatableObject
     /// <summary>
     /// آیا زمان اهمیت دارد؟
     /// </summary>
-    [Required(ErrorMessage = "وارد کردن مقدار «آیا زمان اهمیت دارد؟» الزامی است.")]
+    [Required(ErrorMessage = ValidationCommonMessages.Required)]
     [Display(Name = "آیا زمان اهمیت دارد؟")]
     public bool TimeIsImportant { get; set; }
+
     /// <summary>
-    /// 
+    /// شناسه نوع اقدام
     /// </summary>
-    [Required(ErrorMessage = "وارد کردن مقدار نوع اقدام الزامی است.")]
+    [Required(ErrorMessage = ValidationCommonMessages.Required)]
     [Display(Name = "نوع اقدام")]
     public int ActionTypeId { get; set; }
+
     /// <summary>
-    /// آیا مشتری قصد مراجعه به شعبه را دارد؟
+    /// آیا مراجعه به شعبه دارید؟
     /// </summary>
-    [Required(ErrorMessage = "وارد کردن مقدار «آیا مراجعه به شعبه دارید؟» الزامی است.")]
+    [Required(ErrorMessage = ValidationCommonMessages.Required)]
     [Display(Name = "آیا مراجعه به شعبه دارید؟")]
     public bool GoingToBranch { get; set; }
 
     /// <summary>
-    /// زمان مراجعه (در صورت نیاز)
+    /// تاریخ مراجعه (اجباری در همه حالات)
     /// </summary>
-    [Display(Name = "زمان مراجعه")]
-    public DateTime? Time { get; set; }
+    [Required(ErrorMessage = ValidationCommonMessages.Required)]
+    [Display(Name = "تاریخ مراجعه")]
+    [DataType(DataType.Date)]
+    public DateTime VisitDate { get; set; }
 
+    /// <summary>
+    /// ساعت مراجعه (اجباری فقط در صورت اهمیت زمان)
+    /// </summary>
+    [Display(Name = "ساعت مراجعه")]
+    [DataType(DataType.Time)]
+    public TimeSpan? VisitTime { get; set; }
     /// <summary>
     /// شناسه شعبه (در صورت نیاز)
     /// </summary>
@@ -42,21 +53,29 @@ public class CreateReActionDto : IValidatableObject
     public int? ComplexeId { get; set; }
 
     /// <summary>
-    /// شناسه مشتری
+    /// یادآوری؟
     /// </summary>
-    [Required(ErrorMessage = "وارد کردن شناسه مشتری الزامی است.")]
-    [Display(Name = "شناسه مشتری")]
-    public int CustomerId { get; set; }
+    [Required(ErrorMessage = ValidationCommonMessages.Required)]
+    [Display(Name = "یادآوری")]
+
+
+    public bool IsRemember { get; set; }
 
     /// <summary>
     /// شناسه نوع پرونده
     /// </summary>
-    [Required(ErrorMessage = "وارد کردن شناسه نوع پرونده الزامی است.")]
-    [Display(Name = "شناسه نوع پرونده")]
-    public int FileTypeId { get; set; }
+    [Required(ErrorMessage = ValidationCommonMessages.Required)]
+    [Display(Name = "شناسه پرونده")]
+    public int FileId { get; set; }
 
     /// <summary>
-    /// اعتبارسنجی اختصاصی برای منطق شرطی
+    /// زمان یادآوری
+    /// </summary>
+    [Display(Name = "زمان یادآوری")]
+    public int? RememberTime { get; set; }
+
+    /// <summary>
+    /// اعتبارسنجی شرطی
     /// </summary>
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
@@ -73,7 +92,7 @@ public class CreateReActionDto : IValidatableObject
             if (BranchId == null)
             {
                 yield return new ValidationResult(
-                    "در صورت مراجعه به شعبه، شناسه شعبه الزامی است.",
+                    "در صورت مراجعه به شعبه، وارد کردن شناسه شعبه الزامی است.",
                     new[] { nameof(BranchId) }
                 );
             }
@@ -81,7 +100,7 @@ public class CreateReActionDto : IValidatableObject
             if (ComplexeId == null)
             {
                 yield return new ValidationResult(
-                    "در صورت مراجعه به شعبه، شناسه مجتمع الزامی است.",
+                    "در صورت مراجعه به شعبه، وارد کردن شناسه مجتمع الزامی است.",
                     new[] { nameof(ComplexeId) }
                 );
             }

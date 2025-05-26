@@ -28,7 +28,6 @@ public class GetActionTypesByIdQueryHandler : IRequestHandler<GetActionTypesById
             Id = action.Id,
             Title = action.Title,
             Priority = action.Priority,
-            RememberTime = action.RememberTime
         };
     }
 }

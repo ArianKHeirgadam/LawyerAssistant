@@ -12,8 +12,6 @@ public class FilesMap : IEntityTypeConfiguration<FilesModel>
 
         builder.HasKey(x => x.Id);
 
-        builder.HasKey(f => f.DemandId);
-
         builder.Property(f => f.IsLegal)
                .HasDefaultValue(false);
 
@@ -30,7 +28,7 @@ public class FilesMap : IEntityTypeConfiguration<FilesModel>
         builder.HasOne(f => f.Demand)
                .WithMany(f => f.Files)
                .HasForeignKey(f => f.DemandId)
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(f => f.FilesTypes)
                .WithMany(f => f.Files)

@@ -9,12 +9,7 @@ namespace LawyerAssistant.Application.Features.Files.Handlers.Commands;
 public class CreateFilesCommandHandler : IRequestHandler<CreateFilesCommand, SysResult>
 {
     private readonly IRepository<FilesModel> _repository;
-
-    public CreateFilesCommandHandler(IRepository<FilesModel> repository)
-    {
-        _repository = repository;
-    }
-
+    public CreateFilesCommandHandler(IRepository<FilesModel> repository) => _repository = repository;
     public async Task<SysResult> Handle(CreateFilesCommand request, CancellationToken cancellationToken)
     {
 

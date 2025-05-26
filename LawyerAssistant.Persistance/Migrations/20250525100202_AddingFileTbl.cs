@@ -6,13 +6,49 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LawyerAssistant.Persistance.Migrations
 {
     /// <inheritdoc />
-    public partial class addingFileTable : Migration
+    public partial class AddingFileTbl : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
+                name: "FK_ReActions_Branches_BranchesModelId",
+                table: "ReActions");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_ReActions_Complexes_ComplexesModelId",
+                table: "ReActions");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_ReActions_Customers_CustomersModelId",
+                table: "ReActions");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_ReActions_FilesTypes_FileTypeId",
+                table: "ReActions");
+
+            migrationBuilder.DropIndex(
+                name: "IX_ReActions_BranchesModelId",
+                table: "ReActions");
+
+            migrationBuilder.DropIndex(
+                name: "IX_ReActions_ComplexesModelId",
+                table: "ReActions");
+
+            migrationBuilder.DropIndex(
+                name: "IX_ReActions_CustomersModelId",
+                table: "ReActions");
+
+            migrationBuilder.DropColumn(
+                name: "BranchesModelId",
+                table: "ReActions");
+
+            migrationBuilder.DropColumn(
+                name: "ComplexesModelId",
+                table: "ReActions");
+
+            migrationBuilder.DropColumn(
+                name: "CustomersModelId",
                 table: "ReActions");
 
             migrationBuilder.RenameColumn(
@@ -26,28 +62,37 @@ namespace LawyerAssistant.Persistance.Migrations
                 newName: "IX_ReActions_FileId");
 
             migrationBuilder.AddColumn<int>(
-                name: "FilesTypesModelId",
+                name: "ActionTypeId",
                 table: "ReActions",
                 type: "int",
-                nullable: true);
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "IsCompleted",
+                table: "ReActions",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
 
             migrationBuilder.CreateTable(
                 name: "Files",
                 columns: table => new
                 {
-                    DemandId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    LegalId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: true),
+                    LegalId = table.Column<int>(type: "int", nullable: true),
                     IsLegal = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    DemandId = table.Column<int>(type: "int", nullable: false),
                     FileTypeId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
                     ModDateTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     RegDateTime = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Files", x => x.DemandId);
+                    table.PrimaryKey("PK_Files", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Files_Customers_CustomerId",
                         column: x => x.CustomerId,
@@ -59,7 +104,7 @@ namespace LawyerAssistant.Persistance.Migrations
                         column: x => x.DemandId,
                         principalTable: "Demands",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Files_FilesTypes_FileTypeId",
                         column: x => x.FileTypeId,
@@ -75,14 +120,19 @@ namespace LawyerAssistant.Persistance.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReActions_FilesTypesModelId",
+                name: "IX_ReActions_ActionTypeId",
                 table: "ReActions",
-                column: "FilesTypesModelId");
+                column: "ActionTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Files_CustomerId",
                 table: "Files",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Files_DemandId",
+                table: "Files",
+                column: "DemandId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Files_FileTypeId",
@@ -95,18 +145,19 @@ namespace LawyerAssistant.Persistance.Migrations
                 column: "LegalId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ReActions_FilesTypes_FilesTypesModelId",
+                name: "FK_ReActions_ActionTypes_ActionTypeId",
                 table: "ReActions",
-                column: "FilesTypesModelId",
-                principalTable: "FilesTypes",
-                principalColumn: "Id");
+                column: "ActionTypeId",
+                principalTable: "ActionTypes",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ReActions_Files_FileId",
                 table: "ReActions",
                 column: "FileId",
                 principalTable: "Files",
-                principalColumn: "DemandId",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
 
@@ -114,7 +165,7 @@ namespace LawyerAssistant.Persistance.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_ReActions_FilesTypes_FilesTypesModelId",
+                name: "FK_ReActions_ActionTypes_ActionTypeId",
                 table: "ReActions");
 
             migrationBuilder.DropForeignKey(
@@ -125,11 +176,15 @@ namespace LawyerAssistant.Persistance.Migrations
                 name: "Files");
 
             migrationBuilder.DropIndex(
-                name: "IX_ReActions_FilesTypesModelId",
+                name: "IX_ReActions_ActionTypeId",
                 table: "ReActions");
 
             migrationBuilder.DropColumn(
-                name: "FilesTypesModelId",
+                name: "ActionTypeId",
+                table: "ReActions");
+
+            migrationBuilder.DropColumn(
+                name: "IsCompleted",
                 table: "ReActions");
 
             migrationBuilder.RenameColumn(
@@ -141,6 +196,60 @@ namespace LawyerAssistant.Persistance.Migrations
                 name: "IX_ReActions_FileId",
                 table: "ReActions",
                 newName: "IX_ReActions_FileTypeId");
+
+            migrationBuilder.AddColumn<int>(
+                name: "BranchesModelId",
+                table: "ReActions",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "ComplexesModelId",
+                table: "ReActions",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "CustomersModelId",
+                table: "ReActions",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReActions_BranchesModelId",
+                table: "ReActions",
+                column: "BranchesModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReActions_ComplexesModelId",
+                table: "ReActions",
+                column: "ComplexesModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReActions_CustomersModelId",
+                table: "ReActions",
+                column: "CustomersModelId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_ReActions_Branches_BranchesModelId",
+                table: "ReActions",
+                column: "BranchesModelId",
+                principalTable: "Branches",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_ReActions_Complexes_ComplexesModelId",
+                table: "ReActions",
+                column: "ComplexesModelId",
+                principalTable: "Complexes",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_ReActions_Customers_CustomersModelId",
+                table: "ReActions",
+                column: "CustomersModelId",
+                principalTable: "Customers",
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ReActions_FilesTypes_FileTypeId",

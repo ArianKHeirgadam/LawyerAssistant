@@ -12,8 +12,8 @@ public class CreateActionTypesCommand : IRequest<SysResult>
     [Required(ErrorMessage = ValidationCommonMessages.Required)]
     [Range(0, int.MaxValue, ErrorMessage = ValidationCommonMessages.Range)]
     public int Priority { get; set; }
-
+/*
     [Required(ErrorMessage = ValidationCommonMessages.Required)]
     [Range(1, 168, ErrorMessage = ValidationCommonMessages.Range)] // up to 1 week
-    public int RememberTime { get; set; }
+    public int RememberTime { get; set; }*/
 }

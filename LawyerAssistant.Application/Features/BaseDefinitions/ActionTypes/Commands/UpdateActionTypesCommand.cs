@@ -17,8 +17,4 @@ public class UpdateActionTypesCommand : IRequest<SysResult>
     [Required(ErrorMessage = ValidationCommonMessages.Required)]
     [Display(Name = "اولویت")]
     public int Priority { get; set; }
-
-    [Required(ErrorMessage = ValidationCommonMessages.Required)]
-    [Display(Name = "زمان یادآوری")]
-    public int RememberTime { get; set; }
 }

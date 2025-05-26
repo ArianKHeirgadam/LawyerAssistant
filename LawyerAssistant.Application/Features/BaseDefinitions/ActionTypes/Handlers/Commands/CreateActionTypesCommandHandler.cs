@@ -17,7 +17,7 @@ public class CreateActionTypesCommandHandler : IRequestHandler<CreateActionTypes
 
     public async Task<SysResult> Handle(CreateActionTypesCommand request, CancellationToken cancellationToken)
     {
-        var action = new ActionTypesModel(request.Title, request.Priority, request.RememberTime);
+        var action = new ActionTypesModel(request.Title, request.Priority);
         await _repository.AddAsync(action);
         await _repository.SaveChangesAsync();
         return new SysResult() { IsSuccess = true, Message = SystemCommonMessage.OperationDoneSuccessfully };

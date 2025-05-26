@@ -13,10 +13,6 @@ public class AppConfig
     /// 
     /// </summary>
     public string appFilePath { get; set; }
-    /// <summary>
-    ///  Country Finder Api Url
-    /// </summary>
-    public string CountryFinder { get; set; }
     //===========================================================
     /// <summary>
     /// 
@@ -27,6 +23,11 @@ public class AppConfig
     /// 
     /// </summary>
     public string smsSenderLine { get; set; }
+    //===========================================================
+    /// <summary>
+    /// 
+    /// </summary>
+    public string MobileNumber { get; set; }
     //===========================================================
     /// <summary>
     /// 
@@ -122,14 +123,5 @@ public class AppConfig
     /// 
     /// </summary>
     public int SmsRetryCount { get; set; }
-    //=======================================================
-    /// <summary>
-    /// 
-    /// </summary>
-    public int UserBlockTime { get; set; }
-    //=======================================================
-    /// <summary>
-    /// 
-    /// </summary>
-    public string TranslateUrl { get; set; }
+
 }

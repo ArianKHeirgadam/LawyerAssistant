@@ -1,6 +1,4 @@
-﻿using Domain.Aggregates.Identities;
-using Domain.Base.Enums;
-using LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels;
+﻿using LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels;
 using LawyerAssistant.Domain.Base;
 using LawyerAssistant.Domain.Base.Contracts;
 
@@ -19,21 +17,24 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
     /// </summary>
     public ReActionModel(
         int actionTypeId,
+        int? rememberTime,
+        TimeSpan? visitTime,
         bool timeIsImportant,
         bool goingToBranch,
+        bool isRemember,
         int? branchId,
         int? complexeId,
-        DateTime? date,
-        int customerId,
+        DateTime? visitDate,
         int fileId)
     {
+        RememberTime = rememberTime;
         ActionTypeId = actionTypeId;
-        Time = date;
+        VisitDate = visitDate;
+        VisitTime = visitTime;
         TimeIsImportant = timeIsImportant;
         GoingToBranch = goingToBranch;
         BranchId = branchId;
         ComplexeId = complexeId;
-        CustomerId = customerId;
         FileId = fileId;
         RegDateTime = DateTime.UtcNow;
         IsCompleted = false;
@@ -45,22 +46,26 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
     /// </summary>
     public void Edit(
         int actionTypeId,
+        int? rememberTime,
+        TimeSpan? visitTime,
         bool timeIsImportant,
         bool goingToBranch,
+        bool isRemember,
         int? branchId,
         int? complexeId,
-        DateTime? date,
-        int customerId,
+        DateTime? visitDate,
         int fileId)
     {
+        RememberTime = rememberTime;
         ActionTypeId = actionTypeId;
-        Time = date;
+        VisitDate = visitDate;
+        VisitTime = visitTime;
+        IsRemember = isRemember;
         ActionTypeId = actionTypeId;
         TimeIsImportant = timeIsImportant;
         GoingToBranch = goingToBranch;
         BranchId = branchId;
         ComplexeId = complexeId;
-        CustomerId = customerId;
         FileId = fileId;
         ModDateTime = DateTime.UtcNow;
     }
@@ -82,7 +87,22 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
 
 
     #region Props
-    public DateTime? Time { get; set; }
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    /// <summary>
+    /// زمان یادآوری
+    /// </summary>
+
+    public int? RememberTime { get; set; }
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    /// <summary>
+    /// زمان یادآوری
+    /// </summary>
+    public TimeSpan? VisitTime { get; set; }
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    /// <summary>
+    /// تاریخ
+    /// </summary>
+    public DateTime VisitDate { get; set; }
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     /// <summary>
     /// مشخص می‌کند که آیا زمان اهمیت دارد یا خیر.
@@ -107,11 +127,6 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
     /// </summary>
     public int? ComplexeId { get; set; }
 
-    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    /// <summary>
-    /// شناسه مشتری.
-    /// </summary>
-    public int CustomerId { get; set; }
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     /// <summary>
     /// انجام شده یا نشده.
@@ -141,13 +156,11 @@ public class ReActionModel : ModifyDateTimeWithUserModel, IEntity
     public ComplexesModel? Complexe { get; set; }
 
     /// <summary>
-    /// مدل مشتری.
-    /// </summary>
-    public CustomersModel Customer { get; set; }
-
-    /// <summary>
     /// مدل شعبه مربوطه.
     /// </summary>
     public BranchesModel? Branch { get; set; }
+    public ICollection<SMSCenterModel> SMSCenters { get; set; }
+    public bool IsSent { get; set; } = false;
+    public bool IsRemember { get; set; }
     #endregion
 }

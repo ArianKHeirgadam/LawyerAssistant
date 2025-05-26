@@ -14,12 +14,14 @@ public class DemandsModel : ModifyDateTimeWithUserModel, IEntity
     {
         Name = name;
         FileTypeId = filetypeId;
+        RegDateTime = DateTime.UtcNow;
     }
 
     public void Edit(string name, int filetypeId)
     {
         Name = name;
         FileTypeId = filetypeId;
+        ModDateTime = DateTime.UtcNow;
     }
     //===========================================================
     /// <summary>

@@ -24,6 +24,9 @@ public class FilesModel : ModifyDateTimeWithUserModel, IEntity
         IsLegal = isLegal ?? false;
         DemandId = demandId;
         FileTypeId = fileTypeId;
+        LegalId = legalId;
+        CustomerId = customerId;
+
         RegDateTime = DateTime.UtcNow;
     }
     #endregion
@@ -41,14 +44,16 @@ public class FilesModel : ModifyDateTimeWithUserModel, IEntity
         IsLegal = isLegal ?? false;
         DemandId = demandId;
         FileTypeId = fileTypeId;
+        LegalId = legalId;
+        CustomerId = customerId;
         ModDateTime = DateTime.UtcNow;
     }
     #endregion
 
     #region Properties
     public string Title { get; set; }
-    public int CustomerId { get; set; }
-    public int LegalId { get; set; }
+    public int? CustomerId { get; set; }
+    public int? LegalId { get; set; }
     public bool IsLegal { get; set; } = false;
     public int DemandId { get; set; }
     public int FileTypeId { get; set; }
