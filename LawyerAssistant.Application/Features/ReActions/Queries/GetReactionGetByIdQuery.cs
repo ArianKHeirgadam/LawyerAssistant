@@ -1,5 +1,12 @@
-﻿namespace LawyerAssistant.Application.Features.ReActions.Queries;
+﻿using LawyerAssistant.Application.DTOs;
+using LawyerAssistant.Application.Objects;
+using MediatR;
+using System.ComponentModel.DataAnnotations;
 
-public class GetReactionGetByIdQuery
+namespace LawyerAssistant.Application.Features.ReActions.Queries;
+
+public class GetReactionGetByIdQuery : IRequest<SysResult<ReactionGetDTO>>
 {
+    [Required(ErrorMessage = ValidationCommonMessages.IdentifierRequired)]
+    public int Id { get; set; }
 }

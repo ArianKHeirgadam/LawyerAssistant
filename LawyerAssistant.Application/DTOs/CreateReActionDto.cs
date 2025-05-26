@@ -79,11 +79,11 @@ public class CreateReActionDto : IValidatableObject
     /// </summary>
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        if (TimeIsImportant && Time == null)
+        if (TimeIsImportant && VisitTime == null)
         {
             yield return new ValidationResult(
                 "در صورت اهمیت داشتن زمان، وارد کردن زمان الزامی است.",
-                new[] { nameof(Time) }
+                new[] { nameof(VisitTime) }
             );
         }
 

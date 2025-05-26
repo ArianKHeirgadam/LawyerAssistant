@@ -28,6 +28,8 @@ public static class SystemCommonMessage
     public static string ComplexeIsNotFound { get; set; } = "مجتمع وارد شده یافت نشد";
     public static string BrachnIsNotFound { get; set; } = "شعبه وارد شده یافت نشد";
     public static string ReactionIsNotFound { get; set; } = "اقدامات وارد شده یافت نشد";
+    public static string ActionTypeIsNotFound { get; set; } = "نوع اقدامات وارد شده یافت نشد";
+    public static string FileIsNotFound { get; set; } = "پرونده وارد شده یافت نشد";
 
 
 }

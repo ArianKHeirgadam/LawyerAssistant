@@ -7,6 +7,7 @@ using LawyerAssistant.Infrastructure.Objects.Kavenegar;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Net;
+using System.Text.Json;
 
 namespace Infrastructure.SmsServices
 {
@@ -22,7 +23,7 @@ namespace Infrastructure.SmsServices
             _options = options;
         }
         //******************************************************************************************************************** 
-        public async Task<SysResult> Send(string Message, long? unixDateTime)
+        public async Task<SysResult<SmsMessageDto>> Send(string Message, long? unixDateTime)
         {
             var response = await _restClient.Send<object>(new ApiRequest()
             {
@@ -34,7 +35,7 @@ namespace Infrastructure.SmsServices
             });
             return ResponseToSysResultConvert(response);
         }
-        public async Task<SysResult> Cancel(string messageid)
+        public async Task<SysResult<SmsMessageDto>> Cancel(string messageid)
         {
             var response = await _restClient.Send<object>(new ApiRequest()
             {
@@ -45,11 +46,11 @@ namespace Infrastructure.SmsServices
             });
             return ResponseToSysResultConvert(response);
         }
-        public async Task<SysResult> SendSMS(string clientName, string actionTitle, string actionTime, string requestTitle, DateTime SendDate)
+        public async Task<SysResult<SmsMessageDto>> SendSMS(string clientName, string demandTitle, string actionTime, string actionTypeTitle, DateTime SendDate)
         {
             string message = $"یادآوری: موکل گرامی " +
-                $"{clientName}، لطفاً جهت اقدام «{actionTitle}» مربوط به خواسته " +
-                $"«{requestTitle}» در ساعت {actionTime} اقدامات لازم را انجام دهید.";
+                $"{clientName}، لطفاً جهت اقدام «{demandTitle}» مربوط به خواسته " +
+                $"«{actionTypeTitle}» در ساعت {actionTime} اقدامات لازم را انجام دهید.";
 
             var sms = await Send(message, SendDate.ToUnixDateTime());
             return sms;
@@ -148,17 +149,43 @@ namespace Infrastructure.SmsServices
             return str;
         }
         //********************************************************************************************************************  
-        SysResult ResponseToSysResultConvert(ApiResponse<object> response)
+        SysResult<SmsMessageDto> ResponseToSysResultConvert(ApiResponse<object> response)
         {
             if (response.HttpStatusCode != HttpStatusCode.OK)
                 throw new Exception("خطا در ارسال پیامک");
-            return new SysResult()
+
+            // Convert content to JSON string
+            string json = response.Content?.ToString();
+
+            if (string.IsNullOrWhiteSpace(json))
+                throw new Exception("محتوای پاسخ خالی است");
+
+            // Deserialize the JSON string to SmsMessageDto
+            var smsDto = System.Text.Json.JsonSerializer.Deserialize<SmsMessageDto>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            return new SysResult<SmsMessageDto>
             {
                 IsSuccess = true,
                 Message = "پیامک با موفقیت ارسال گردید",
-                Value = response.Content
+                Value = smsDto
             };
         }
 
     }
+
+}
+
+public class SmsMessageDto
+{
+    public long MessageId { get; set; } // شناسه یکتای این پیامک
+    public string Message { get; set; } // متن پیام ارسال شده
+    public int Status { get; set; } // وضعیت عددی این پیامک
+    public string StatusText { get; set; } // متن توضیح وضعیت عددی این پیامک
+    public string Sender { get; set; } // شماره فرستنده
+    public string Receptor { get; set; } // شماره گیرنده
+    public long Date { get; set; } // زمان ارسال این پیامک به فرمت UnixTime
+    public int Cost { get; set; } // هزینه این پیامک (ریال)
 }

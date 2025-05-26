@@ -13,7 +13,8 @@ public class ReactionController : ControllerBase
 {
     private readonly ISender _sender;
     public ReactionController(ISender sender) => _sender = sender;
-    
+
+    #region Commands
     /// <summary>
     /// create the reaction 
     /// </summary>
@@ -42,4 +43,5 @@ public class ReactionController : ControllerBase
         var response = await _sender.Send(command);
         return Ok(response);
     }
+    #endregion
 }

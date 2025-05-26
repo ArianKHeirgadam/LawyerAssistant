@@ -8,7 +8,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-namespace LawyerAssistant.Application.Features.ReActions.Handlers;
+namespace LawyerAssistant.Application.Features.ReActions.Handlers.Queries;
 public class GetReactionQueryHandler : IRequestHandler<GetReactionQuery, SysResult<PagingResponse<ReactionGetDTO>>>
 {
     private readonly IRepository<ReActionModel> _repository;

@@ -5,7 +5,7 @@ using LawyerAssistant.Application.Objects;
 using LawyerAssistant.Domain.Aggregates;
 using MediatR;
 
-namespace LawyerAssistant.Application.Features.ReActions.Handlers;
+namespace LawyerAssistant.Application.Features.ReActions.Handlers.Commands;
 
 public class ChangeReactionStatusCommandHandler : IRequestHandler<ChangeReactionStatusCommand, SysResult>
 {
