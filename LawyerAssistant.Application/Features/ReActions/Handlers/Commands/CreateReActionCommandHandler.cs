@@ -9,6 +9,7 @@ using LawyerAssistant.Domain.Aggregates;
 using LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace LawyerAssistant.Application.Features.ReActions.Handlers;
 
@@ -18,9 +19,10 @@ public class CreateReActionCommandHandler : IRequestHandler<CreateReActionComman
     private readonly IRepository<FilesModel> _fileRepository;
     private readonly IRepository<SMSCenterModel> _smsRepository;
     private readonly IRepository<ActionTypesModel> _actionTypesRepository;
+    private readonly IOptions<AppConfig> _options;
     private readonly ITransactionHandler _transactionHandler;
     private readonly IKavenegarSmsSenderService _kavenegarSmsSenderService;
-    public CreateReActionCommandHandler(IRepository<ReActionModel> repository, ITransactionHandler transactionHandler, IKavenegarSmsSenderService kavenegarSmsSenderService, IRepository<FilesModel> fileRepository, IRepository<ActionTypesModel> actionTypesRepository, IRepository<SMSCenterModel> smsRepository)
+    public CreateReActionCommandHandler(IRepository<ReActionModel> repository, ITransactionHandler transactionHandler, IKavenegarSmsSenderService kavenegarSmsSenderService, IRepository<FilesModel> fileRepository, IRepository<ActionTypesModel> actionTypesRepository, IRepository<SMSCenterModel> smsRepository, IOptions<AppConfig> options)
     {
         _repository = repository;
         _transactionHandler = transactionHandler;
@@ -28,6 +30,7 @@ public class CreateReActionCommandHandler : IRequestHandler<CreateReActionComman
         _fileRepository = fileRepository;
         _actionTypesRepository = actionTypesRepository;
         _smsRepository = smsRepository;
+        _options = options;
     }
 
     public async Task<SysResult> Handle(CreateReActionCommand request, CancellationToken cancellationToken)
@@ -78,11 +81,11 @@ public class CreateReActionCommandHandler : IRequestHandler<CreateReActionComman
                 if (reminderTime == null)
                     throw new CustomException("زمان یادآوری نامعتبر است.");
 
-                string actionTime = (dto.VisitDate + dto.VisitTime).Value.ToHijriDateTime();
+                string actionTime = (dto.VisitDate + dto.VisitTime).Value.ToLocalDateLongFormatString(_options);
 
                 var result = await _kavenegarSmsSenderService.SendSMS(customerName, file.Demand.Name, actionTime, actionType.Title, reminderTime.Value);
 
-                var sms = new SMSCenterModel(result.Value.MessageId.ToString() , reAction.Id);
+                var sms = new SMSCenterModel(result.Value.entries.FirstOrDefault().messageid.ToString() , reAction.Id);
 
 
                 await _smsRepository.AddAsync(sms);
@@ -125,7 +128,7 @@ public class CreateReActionCommandHandler : IRequestHandler<CreateReActionComman
             actionDateTime = dto.VisitDate.Date + (dto.VisitTime ?? TimeSpan.Zero);
         }
 
-        var reminderTime = actionDateTime - TimeSpan.FromMinutes(dto.RememberTime.Value);
+        var reminderTime = actionDateTime - TimeSpan.FromHours(dto.RememberTime.Value);
 
         if (reminderTime <= DateTime.Now)
             throw new CustomException("زمان یادآوری نمی‌تواند قبل از زمان فعلی باشد.");

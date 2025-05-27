@@ -1,4 +1,5 @@
 ﻿using Application.Enums;
+using FirebaseAdmin.Messaging;
 using LawyerAssistant.Application.Contracts.Common;
 using LawyerAssistant.Application.Contracts.Infrastructure;
 using LawyerAssistant.Application.DTOs.Base;
@@ -24,7 +25,7 @@ namespace Infrastructure.SmsServices
             _options = options;
         }
         //******************************************************************************************************************** 
-        public async Task<SysResult<SmsMessageDto>> Send(string Message, long? unixDateTime)
+        public async Task<SysResult<SmsMessageDto>> Send(string Message, long unixDateTime)
         {
             var response = await _restClient.Send<object>(new ApiRequest()
             {
@@ -40,7 +41,8 @@ namespace Infrastructure.SmsServices
         {
             var response = await _restClient.Send<object>(new ApiRequest()
             {
-                ApiType = ApiType.GET,
+                ApiType = ApiType.POST,
+                Data = SmsResquestGenarator("125125", "124124", "asgag", 0),
                 Url = baseUrl + _options.Value.smsApiKey + $"/sms/cancel.json?messageid={messageid}",
                 HttpRequestDataType = HttpRequestDataType.QueryString,
 
@@ -90,7 +92,7 @@ namespace Infrastructure.SmsServices
                 message = Message,
                 receptor = MobileNumber,
                 sender = senderLine,
-                unixDateTime = unixDateTime
+                date = unixDateTime
             };
         }
         //******************************************************************************************************************** 
@@ -162,10 +164,7 @@ namespace Infrastructure.SmsServices
                 throw new Exception("محتوای پاسخ خالی است");
 
             // Deserialize the JSON string to SmsMessageDto
-            var smsDto = System.Text.Json.JsonSerializer.Deserialize<SmsMessageDto>(json, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            var smsDto = System.Text.Json.JsonSerializer.Deserialize<SmsMessageDto>(json);
 
             return new SysResult<SmsMessageDto>
             {

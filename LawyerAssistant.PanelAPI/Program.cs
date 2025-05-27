@@ -3,6 +3,7 @@ using LawyerAssistant.Application;
 using LawyerAssistant.Application.Contracts.Common;
 using LawyerAssistant.Application.Extentions;
 using LawyerAssistant.Application.Objects;
+using LawyerAssistant.Application.Utilities;
 using LawyerAssistant.PanelAPI;
 using LawyerAssistant.Persistance;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,7 +16,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(opts =>
+{
+    opts.JsonSerializerOptions.Converters.Add(new TimeSpanJsonConverter());
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

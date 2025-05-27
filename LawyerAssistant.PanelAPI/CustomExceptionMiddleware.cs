@@ -39,7 +39,7 @@ public class CustomExceptionMiddleware
         var response = new SysResult
         {
             IsSuccess = false,
-            Message = isCustomException ? exception.Message : _defaultErrorMessage
+            Message = isCustomException ? exception.Message : exception.Message
         };
 
         var result = System.Text.Json.JsonSerializer.Serialize(response);
@@ -48,6 +48,7 @@ public class CustomExceptionMiddleware
 
     private void AddLogs(string message, string path)
     {
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
         _logger.LogError("Exception occurred at path: {Path} | Message: {Message}", path, message);
     }
 }

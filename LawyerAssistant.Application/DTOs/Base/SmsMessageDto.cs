@@ -6,14 +6,27 @@ using System.Threading.Tasks;
 
 namespace LawyerAssistant.Application.DTOs.Base;
 
+
 public class SmsMessageDto
 {
-    public long MessageId { get; set; } // شناسه یکتای این پیامک
-    public string Message { get; set; } // متن پیام ارسال شده
-    public int Status { get; set; } // وضعیت عددی این پیامک
-    public string StatusText { get; set; } // متن توضیح وضعیت عددی این پیامک
-    public string Sender { get; set; } // شماره فرستنده
-    public string Receptor { get; set; } // شماره گیرنده
-    public long Date { get; set; } // زمان ارسال این پیامک به فرمت UnixTime
-    public int Cost { get; set; } // هزینه این پیامک (ریال)
+    public Return _return { get; set; }
+    public Entry[] entries { get; set; }
+}
+
+public class Return
+{
+    public int status { get; set; }
+    public string message { get; set; }
+}
+
+public class Entry
+{
+    public int messageid { get; set; }
+    public string message { get; set; }
+    public int status { get; set; }
+    public string statustext { get; set; }
+    public string sender { get; set; }
+    public string receptor { get; set; }
+    public int date { get; set; }
+    public int cost { get; set; }
 }

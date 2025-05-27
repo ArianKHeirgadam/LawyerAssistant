@@ -53,5 +53,20 @@ public class ReactionController : ControllerBase
         var response = await _sender.Send(command);
         return Ok(response);
     }
+
+    /// <summary>
+    /// Update the reaction 
+    /// </summary>
+    /// <param name="command">Update the reaction </param>
+    /// <returns> System result </returns>
+    /// <remarks>
+    /// </remarks>
+
+    [HttpPut()]
+    public async Task<IActionResult> Update([FromBody] UpdateReactionDTO command)
+    {
+        var response = await _sender.Send(new UpdateReactionCommand() { Dto = command});
+        return Ok(response);
+    }
     #endregion
 }

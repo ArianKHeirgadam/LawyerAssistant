@@ -1,4 +1,5 @@
 ﻿using LawyerAssistant.Application.Objects;
+using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 
 namespace LawyerAssistant.Application.DTOs;
@@ -25,7 +26,7 @@ public class UpdateReactionDTO : IValidatableObject
     public DateTime VisitDate { get; set; }
 
     [Display(Name = "ساعت مراجعه")]
-    [DataType(DataType.Time)]
+    [SwaggerSchema(Format = "HH:mm", Description = "Format: HH:mm")] 
     public TimeSpan? VisitTime { get; set; }
 
     [Display(Name = "شناسه شعبه")]

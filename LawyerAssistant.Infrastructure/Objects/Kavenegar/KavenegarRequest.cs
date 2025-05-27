@@ -21,4 +21,6 @@ public class KavenegarRequest
     /// 
     /// </summary>
     public long? unixDateTime { get; set; }
+
+    public long? date { get; set; }
 }
