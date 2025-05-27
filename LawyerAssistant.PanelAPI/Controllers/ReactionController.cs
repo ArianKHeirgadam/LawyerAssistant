@@ -1,5 +1,6 @@
 ﻿using LawyerAssistant.Application.DTOs;
 using LawyerAssistant.Application.Features.ReActions.Commands;
+using LawyerAssistant.Application.Features.ReActions.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,15 @@ public class ReactionController : ControllerBase
 {
     private readonly ISender _sender;
     public ReactionController(ISender sender) => _sender = sender;
+
+    #region Queries
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get(int id)
+    {
+        var result = await _sender.Send(new GetReactionGetByIdQuery() { Id = id });
+        return Ok(result);
+    }
+    #endregion
 
     #region Commands
     /// <summary>
