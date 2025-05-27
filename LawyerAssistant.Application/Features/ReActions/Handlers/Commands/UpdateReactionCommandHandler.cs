@@ -38,8 +38,12 @@ public class UpdateReactionCommandHandler : IRequestHandler<UpdateReactionComman
         if (reaction == null) throw new CustomException(SystemCommonMessage.ReactionIsNotFound);
 
         if (model.IsRemember)
-        { 
-            if(model.RememberTime == reaction.RememberTime)
+        {
+            if (model.RememberTime != reaction.RememberTime || model.VisitTime != reaction.VisitTime)
+            { 
+                
+            
+            }
         }
 
     }
