@@ -1,7 +1,10 @@
-﻿using LawyerAssistant.Application.Features.ReActions.Queries;
+﻿using LawyerAssistant.Application.Contracts.Infrastructure;
+using LawyerAssistant.Application.Features.ReActions.Queries;
+using LawyerAssistant.Application.Objects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace LawyerAssistant.PanelAPI.Controllers;
 
@@ -12,7 +15,14 @@ namespace LawyerAssistant.PanelAPI.Controllers;
 public class DashboardController : ControllerBase
 {
     private readonly ISender _sender;
-    public DashboardController(ISender sender) => _sender = sender;
+    private readonly IKavenegarCreditService _kavenegarCreditService;
+    private readonly IOptions<AppConfig> _options;
+    public DashboardController(ISender sender, IKavenegarCreditService kavenegarCreditService, IOptions<AppConfig> options)
+    {
+        _sender = sender;
+        _kavenegarCreditService = kavenegarCreditService;
+        _options = options;
+    }
 
 
     #region Query
@@ -21,6 +31,12 @@ public class DashboardController : ControllerBase
     {
         var result = await _sender.Send(Query);
         return Ok(result);
+    }
+    [HttpGet("sms-credit")]
+    public async Task<IActionResult> GetCredit()
+    {
+        var value = await _kavenegarCreditService.Inquiry(_options.Value.smsApiKey);
+        return Ok(value);
     }
     #endregion
 }
