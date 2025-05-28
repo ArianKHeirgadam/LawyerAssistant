@@ -51,9 +51,7 @@ namespace Infrastructure.SmsServices
         }
         public async Task<SysResult<SmsMessageDto>> SendSMS(string clientName, string demandTitle, string actionTime, string actionTypeTitle, DateTime SendDate)
         {
-            string message = $"یادآوری: موکل گرامی " +
-                $"{clientName}، لطفاً جهت اقدام «{demandTitle}» مربوط به خواسته " +
-                $"«{actionTypeTitle}» در ساعت {actionTime} اقدامات لازم را انجام دهید.";
+            string message = $"وکیل گرامی، موکل شما {clientName} باید در ساعت {actionTime} نسبت به «{demandTitle}» مربوط به خواسته «{actionTypeTitle}» اقدام لازم را انجام دهد.";
 
             var sms = await Send(message, SendDate.ToUnixDateTime());
             return sms;
