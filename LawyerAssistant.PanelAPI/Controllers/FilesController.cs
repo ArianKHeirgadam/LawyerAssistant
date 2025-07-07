@@ -1,4 +1,5 @@
-﻿using LawyerAssistant.Application.Features.Files.Commands;
+﻿using LawyerAssistant.Application.DTOs.Base;
+using LawyerAssistant.Application.Features.Files.Commands;
 using LawyerAssistant.Application.Features.Files.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -50,10 +51,10 @@ public class FilesController : ControllerBase
         var result = await _sender.Send(command);
         return Ok(result);
     }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    [HttpDelete]
+    public async Task<IActionResult> Delete([FromBody] DeleteInputDTO input)
     {
-        var result = await _sender.Send(new DeleteFilesCommand() { Id = id });
+        var result = await _sender.Send(new DeleteFilesCommand() { Ids = input.Ids });
         return Ok(result);
     }
     #endregion

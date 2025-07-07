@@ -1,4 +1,5 @@
-﻿using LawyerAssistant.Application.Features.BaseDefinitions.ActionTypes.Commands;
+﻿using LawyerAssistant.Application.DTOs.Base;
+using LawyerAssistant.Application.Features.BaseDefinitions.ActionTypes.Commands;
 using LawyerAssistant.Application.Features.BaseDefinitions.ActionTypes.Queries;
 using LawyerAssistant.Application.Features.BaseDefinitions.Demands.Queries;
 using MediatR;
@@ -50,10 +51,10 @@ public class ActionTypesController : ControllerBase
         var result = await _sender.Send(command);
         return Ok(result);
     }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    [HttpDelete]
+    public async Task<IActionResult> Delete([FromBody] DeleteInputDTO input)
     {
-        var result = await _sender.Send(new DeleteActionTypesCommand() { Id = id });
+        var result = await _sender.Send(new DeleteActionTypesCommand() { Ids = input.Ids });
         return Ok(result);
     }
     #endregion

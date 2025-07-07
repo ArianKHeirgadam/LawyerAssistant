@@ -1,10 +1,11 @@
-﻿using LawyerAssistant.Application.Objects;
+﻿using LawyerAssistant.Application.DTOs.Base;
+using LawyerAssistant.Application.Objects;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace LawyerAssistant.Application.Features.BaseDefinitions.Cities.Commands;
 
-public class CreateFileTypeCommand : IRequest<SysResult>
+public class CreateFileTypeCommand : IRequest<SysResult<GenericDTO>>
 {
     [Display(Name ="عنوان")]
     [Required(ErrorMessage = ValidationCommonMessages.Required)]

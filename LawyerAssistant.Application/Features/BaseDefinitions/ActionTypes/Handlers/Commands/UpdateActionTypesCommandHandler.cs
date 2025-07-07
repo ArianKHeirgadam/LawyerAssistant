@@ -1,5 +1,6 @@
 ﻿using Application.Exceptions;
 using LawyerAssistant.Application.Contracts.Persistence;
+using LawyerAssistant.Application.DTOs.BaseDefinitions;
 using LawyerAssistant.Application.Features.BaseDefinitions.ActionTypes.Commands;
 using LawyerAssistant.Application.Objects;
 using LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels;
@@ -7,7 +8,7 @@ using MediatR;
 
 namespace LawyerAssistant.Application.Features.BaseDefinitions.ActionTypes.Handlers.Commands;
 
-public class UpdateActionTypesCommandHandler : IRequestHandler<UpdateActionTypesCommand, SysResult>
+public class UpdateActionTypesCommandHandler : IRequestHandler<UpdateActionTypesCommand, SysResult<ActionDto>>
 {
     private readonly IRepository<ActionTypesModel> _repository;
 
@@ -16,7 +17,7 @@ public class UpdateActionTypesCommandHandler : IRequestHandler<UpdateActionTypes
         _repository = repository;
     }
 
-    public async Task<SysResult> Handle(UpdateActionTypesCommand request, CancellationToken cancellationToken)
+    public async Task<SysResult<ActionDto>> Handle(UpdateActionTypesCommand request, CancellationToken cancellationToken)
     {
         var action = await _repository.FirstOrDefaultAsync(x => x.Id == request.Id);
         if (action == null) throw new CustomException(SystemCommonMessage.DataWasNotFound);
@@ -24,10 +25,16 @@ public class UpdateActionTypesCommandHandler : IRequestHandler<UpdateActionTypes
         action.Edit(request.Title, request.Priority);
         await _repository.SaveChangesAsync();
 
-        return new SysResult
+        return new SysResult<ActionDto>()
         {
             IsSuccess = true,
-            Message = SystemCommonMessage.OperationDoneSuccessfully
+            Message = SystemCommonMessage.OperationDoneSuccessfully,
+            Value = new ActionDto
+            {
+                Id = action.Id,
+                Priority = action.Priority,
+                Title = action.Title
+            }
         };
     }
 }

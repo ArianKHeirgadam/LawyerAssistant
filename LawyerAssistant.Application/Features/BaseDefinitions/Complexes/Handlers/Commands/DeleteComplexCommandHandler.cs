@@ -4,6 +4,7 @@ using LawyerAssistant.Application.Features.BaseDefinitions.Complexes.Commands;
 using LawyerAssistant.Application.Objects;
 using LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace LawyerAssistant.Application.Features.BaseDefinitions.Complexes.Handlers.Commands;
 
@@ -18,18 +19,32 @@ public class DeleteComplexCommandHandler : IRequestHandler<DeleteComplexCommand,
 
     public async Task<SysResult> Handle(DeleteComplexCommand request, CancellationToken cancellationToken)
     {
-        var complex = await _repository.FirstOrDefaultAsync(c => c.Id == request.Id);
-
-        if (complex == null)
-            throw new CustomException(SystemCommonMessage.DataWasNotFound);
-
-        _repository.Delete(complex);
-        await _repository.SaveChangesAsync();
-
-        return new SysResult
+        try
         {
-            IsSuccess = true,
-            Message = SystemCommonMessage.OperationDoneSuccessfully
-        };
+            var actions = await _repository
+            .Where(x => request.Ids.Contains(x.Id))
+            .ToListAsync();
+
+            if (actions.Count != request.Ids.Count)
+                throw new CustomException(SystemCommonMessage.DataWasNotFound);
+
+            _repository.DeleteRange(actions);
+            await _repository.SaveChangesAsync();
+
+            return new SysResult
+            {
+                IsSuccess = true,
+                Message = SystemCommonMessage.OperationDoneSuccessfully
+            };
+
+        }
+        catch (Exception ex)
+        {
+            return new SysResult
+            {
+                IsSuccess = false,
+                Message = SystemCommonMessage.CantRemoveBecauseThereIsDependy
+            };
+        }
     }
 }

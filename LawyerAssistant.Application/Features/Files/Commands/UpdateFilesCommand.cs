@@ -4,7 +4,7 @@ using MediatR;
 
 namespace LawyerAssistant.Application.Features.Files.Commands;
 
-public class UpdateFilesCommand : IRequest<SysResult>
+public class UpdateFilesCommand : IRequest<SysResult<FilesDetailsDto>>
 {
     public FilesUpdateDto Dto { get; set; }
 }

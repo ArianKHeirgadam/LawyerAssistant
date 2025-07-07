@@ -1,10 +1,11 @@
-﻿using LawyerAssistant.Application.Objects;
+﻿using LawyerAssistant.Application.DTOs.BaseDefinitions;
+using LawyerAssistant.Application.Objects;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace LawyerAssistant.Application.Features.BaseDefinitions.ActionTypes.Commands;
 
-public class UpdateActionTypesCommand : IRequest<SysResult>
+public class UpdateActionTypesCommand : IRequest<SysResult<ActionDto>>
 {
     [Required(ErrorMessage = ValidationCommonMessages.IdentifierRequired)]
     public int Id { get; set; }

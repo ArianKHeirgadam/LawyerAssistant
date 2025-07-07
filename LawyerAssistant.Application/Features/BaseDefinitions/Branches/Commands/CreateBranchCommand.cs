@@ -1,10 +1,11 @@
-﻿using LawyerAssistant.Application.Objects;
+﻿using LawyerAssistant.Application.DTOs.BaseDefinitions;
+using LawyerAssistant.Application.Objects;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace LawyerAssistant.Application.Features.BaseDefinitions.Branches.Commands;
 
-public class CreateBranchCommand : IRequest<SysResult>
+public class CreateBranchCommand : IRequest<SysResult<GetBranchDTO>>
 {
     [Required(ErrorMessage = ValidationCommonMessages.Required)]
     [MaxLength(100, ErrorMessage = ValidationCommonMessages.MaxLength)]

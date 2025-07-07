@@ -1,5 +1,6 @@
 ﻿using Application.Exceptions;
 using LawyerAssistant.Application.Contracts.Persistence;
+using LawyerAssistant.Application.DTOs.BaseDefinitions;
 using LawyerAssistant.Application.Features.BaseDefinitions.Complexes.Commands;
 using LawyerAssistant.Application.Objects;
 using LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels;
@@ -7,7 +8,7 @@ using MediatR;
 
 namespace LawyerAssistant.Application.Features.BaseDefinitions.Complexes.Handlers.Commands;
 
-public class CreateComplexCommandHandler : IRequestHandler<CreateComplexCommand, SysResult>
+public class CreateComplexCommandHandler : IRequestHandler<CreateComplexCommand, SysResult<GetComplexDTO>>
 {
     private readonly IRepository<ComplexesModel> _repository;
     private readonly IRepository<CitiesModel> _cityRepository;
@@ -17,7 +18,7 @@ public class CreateComplexCommandHandler : IRequestHandler<CreateComplexCommand,
         _cityRepository = cityRepository;
     }
 
-    public async Task<SysResult> Handle(CreateComplexCommand request, CancellationToken cancellationToken)
+    public async Task<SysResult<GetComplexDTO>> Handle(CreateComplexCommand request, CancellationToken cancellationToken)
     {
         await ValidateCity(request.CityId);
 
@@ -26,8 +27,15 @@ public class CreateComplexCommandHandler : IRequestHandler<CreateComplexCommand,
         await _repository.AddAsync(complex);
         await _repository.SaveChangesAsync();
 
-        return new SysResult
+        return new SysResult<GetComplexDTO>
         {
+            Value = new GetComplexDTO
+            {
+                Id = complex.Id,
+                Title = complex.Title,
+                CityId = complex.CityId,
+                CityTitle = complex.City?.Name ?? string.Empty
+            },
             IsSuccess = true,
             Message = SystemCommonMessage.OperationDoneSuccessfully
         };

@@ -1,4 +1,5 @@
-﻿using LawyerAssistant.Application.Features.BaseDefinitions.ActionTypes.Queries;
+﻿using LawyerAssistant.Application.DTOs.Base;
+using LawyerAssistant.Application.Features.BaseDefinitions.ActionTypes.Queries;
 using LawyerAssistant.Application.Features.BaseDefinitions.Cities.Commands;
 using LawyerAssistant.Application.Features.BaseDefinitions.Cities.Queries;
 using LawyerAssistant.Application.Features.BaseDefinitions.FileTypes.Queries;
@@ -53,10 +54,10 @@ public class FileTypesController : ControllerBase
         var result = await _sender.Send(command);
         return Ok(result);
     }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    [HttpDelete]
+    public async Task<IActionResult> Delete([FromBody] DeleteInputDTO input)
     {
-        var result = await _sender.Send(new DeleteFileTypeCommand() { Id = id });
+        var result = await _sender.Send(new DeleteFileTypeCommand() { Ids = input.Ids });
         return Ok(result);
     }
     #endregion

@@ -7,5 +7,5 @@ namespace LawyerAssistant.Application.Features.Files.Commands;
 public class DeleteFilesCommand : IRequest<SysResult>
 {
     [Required(ErrorMessage =ValidationCommonMessages.IdentifierRequired)]
-    public int Id { get; set; }
+    public List<int> Ids { get; set; }
 }
