@@ -7,5 +7,5 @@ namespace LawyerAssistant.Application.Features.BaseDefinitions.ActionTypes.Comma
 public class DeleteActionTypesCommand : IRequest<SysResult>
 {
     [Required(ErrorMessage = ValidationCommonMessages.IdentifierRequired)]
-    public int Id { get; set; }
+    public List<int> Ids { get; set; }
 }

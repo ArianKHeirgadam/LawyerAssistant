@@ -1,4 +1,5 @@
-﻿using LawyerAssistant.Application.Features.BaseDefinitions.Cities.Commands;
+﻿using LawyerAssistant.Application.DTOs.Base;
+using LawyerAssistant.Application.Features.BaseDefinitions.Cities.Commands;
 using LawyerAssistant.Application.Features.BaseDefinitions.Cities.Queries;
 using LawyerAssistant.Application.Features.BaseDefinitions.Demands.Queries;
 using MediatR;
@@ -52,10 +53,10 @@ public class DemandsController : ControllerBase
         var result = await _sender.Send(command);
         return Ok(result);
     }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    [HttpDelete]
+    public async Task<IActionResult> Delete([FromBody] DeleteInputDTO input)
     {
-        var result = await _sender.Send(new DeleteDemandsCommand() { Id = id });
+        var result = await _sender.Send(new DeleteDemandsCommand() { Ids = input.Ids });
         return Ok(result);
     }
     #endregion

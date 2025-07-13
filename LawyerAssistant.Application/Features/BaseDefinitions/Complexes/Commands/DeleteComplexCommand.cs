@@ -8,5 +8,5 @@ public class DeleteComplexCommand : IRequest<SysResult>
 {
     [Required(ErrorMessage = ValidationCommonMessages.IdentifierRequired)]
     [Display(Name = "شناسه")]
-    public int Id { get; set; }
+    public List<int> Ids { get; set; }
 }

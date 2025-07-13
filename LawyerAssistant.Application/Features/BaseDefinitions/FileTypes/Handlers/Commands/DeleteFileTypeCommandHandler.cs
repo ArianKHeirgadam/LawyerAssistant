@@ -4,6 +4,7 @@ using LawyerAssistant.Application.Features.BaseDefinitions.Cities.Commands;
 using LawyerAssistant.Application.Objects;
 using LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace LawyerAssistant.Application.Features.BaseDefinitions.Cities.Handlers.Commands;
 
@@ -16,13 +17,32 @@ public class DeleteFileTypeCommandHandler : IRequestHandler<DeleteFileTypeComman
     }
     public async Task<SysResult> Handle(DeleteFileTypeCommand request, CancellationToken cancellationToken)
     {
-        var fileType = await _repository.FirstOrDefaultAsync(c => c.Id == request.Id);
+        try
+        {
+            var actions = await _repository
+            .Where(x => request.Ids.Contains(x.Id))
+            .ToListAsync();
 
-        if (fileType is null) throw new CustomException(SystemCommonMessage.DataWasNotFound);
+            if (actions.Count != request.Ids.Count)
+                throw new CustomException(SystemCommonMessage.DataWasNotFound);
 
-        _repository.Delete(fileType);
-        await _repository.SaveChangesAsync();
+            _repository.DeleteRange(actions);
+            await _repository.SaveChangesAsync();
 
-        return new SysResult() { IsSuccess = true, Message = SystemCommonMessage.OperationDoneSuccessfully };
+            return new SysResult
+            {
+                IsSuccess = true,
+                Message = SystemCommonMessage.OperationDoneSuccessfully
+            };
+
+        }
+        catch (Exception ex)
+        {
+            return new SysResult
+            {
+                IsSuccess = false,
+                Message = SystemCommonMessage.CantRemoveBecauseThereIsDependy
+            };
+        }
     }
 }

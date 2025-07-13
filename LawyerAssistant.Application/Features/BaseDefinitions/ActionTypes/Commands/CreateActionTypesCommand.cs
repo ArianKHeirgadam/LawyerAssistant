@@ -1,9 +1,10 @@
-﻿using LawyerAssistant.Application.Objects;
+﻿using LawyerAssistant.Application.DTOs.BaseDefinitions;
+using LawyerAssistant.Application.Objects;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace LawyerAssistant.Application.Features.BaseDefinitions.ActionTypes.Commands;
-public class CreateActionTypesCommand : IRequest<SysResult>
+public class CreateActionTypesCommand : IRequest<SysResult<ActionDto>>
 {
     [Required(ErrorMessage = ValidationCommonMessages.Required)]
     [MaxLength(200, ErrorMessage = ValidationCommonMessages.MaxLength)]

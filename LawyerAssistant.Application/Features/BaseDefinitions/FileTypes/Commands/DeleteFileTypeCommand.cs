@@ -7,5 +7,5 @@ namespace LawyerAssistant.Application.Features.BaseDefinitions.Cities.Commands;
 public class DeleteFileTypeCommand : IRequest<SysResult>
 {
     [Required(ErrorMessage = ValidationCommonMessages.IdentifierRequired)]
-    public int Id { get; set; }
+    public List<int> Ids { get; set; }
 }

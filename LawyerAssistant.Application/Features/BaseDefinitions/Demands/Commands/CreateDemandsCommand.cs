@@ -1,10 +1,11 @@
-﻿using LawyerAssistant.Application.Objects;
+﻿using LawyerAssistant.Application.DTOs.BaseDefinitions;
+using LawyerAssistant.Application.Objects;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace LawyerAssistant.Application.Features.BaseDefinitions.Cities.Commands;
 
-public class CreateDemandsCommand : IRequest<SysResult>
+public class CreateDemandsCommand : IRequest<SysResult<GetDemandsDTO>>
 {
     [Display(Name ="عنوان")]
     [Required(ErrorMessage = ValidationCommonMessages.Required)]

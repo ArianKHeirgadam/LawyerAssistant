@@ -1,16 +1,24 @@
 ﻿using LawyerAssistant.Application.Contracts.Persistence;
+using LawyerAssistant.Application.DTOs;
 using LawyerAssistant.Application.Features.Files.Commands;
+using LawyerAssistant.Application.Features.Files.Queries;
 using LawyerAssistant.Application.Objects;
 using LawyerAssistant.Domain.Aggregates;
 using MediatR;
 
 namespace LawyerAssistant.Application.Features.Files.Handlers.Commands;
 
-public class CreateFilesCommandHandler : IRequestHandler<CreateFilesCommand, SysResult>
+public class CreateFilesCommandHandler : IRequestHandler<CreateFilesCommand, SysResult<FilesDetailsDto>>
 {
     private readonly IRepository<FilesModel> _repository;
-    public CreateFilesCommandHandler(IRepository<FilesModel> repository) => _repository = repository;
-    public async Task<SysResult> Handle(CreateFilesCommand request, CancellationToken cancellationToken)
+    private readonly ISender _sender;
+    public CreateFilesCommandHandler(IRepository<FilesModel> repository, ISender sender)
+    {
+        _repository = repository;
+        _sender = sender;
+    }
+
+    public async Task<SysResult<FilesDetailsDto>> Handle(CreateFilesCommand request, CancellationToken cancellationToken)
     {
 
         var filesModel = new FilesModel
@@ -26,10 +34,6 @@ public class CreateFilesCommandHandler : IRequestHandler<CreateFilesCommand, Sys
         await _repository.AddAsync(filesModel);
         await _repository.SaveChangesAsync();
 
-        return new SysResult
-        {
-            IsSuccess = true,
-            Message = SystemCommonMessage.OperationDoneSuccessfully
-        };
+        return await _sender.Send(new GetFilesByIdQuery() { Id = filesModel.Id });
     }
 }

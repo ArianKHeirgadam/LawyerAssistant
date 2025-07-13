@@ -1,10 +1,11 @@
-﻿using LawyerAssistant.Application.Objects;
+﻿using LawyerAssistant.Application.DTOs.BaseDefinitions;
+using LawyerAssistant.Application.Objects;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace LawyerAssistant.Application.Features.BaseDefinitions.Branches.Commands;
 
-public class UpdateBranchCommand : IRequest<SysResult>
+public class UpdateBranchCommand : IRequest<SysResult<GetBranchDTO>>
 {
     [Required(ErrorMessage = ValidationCommonMessages.IdentifierRequired)]
     [Display(Name = "شناسه")]

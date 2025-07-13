@@ -1,10 +1,11 @@
-﻿using LawyerAssistant.Application.Objects;
+﻿using LawyerAssistant.Application.DTOs.BaseDefinitions;
+using LawyerAssistant.Application.Objects;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace LawyerAssistant.Application.Features.BaseDefinitions.Complexes.Commands;
 
-public class UpdateComplexCommand : IRequest<SysResult>
+public class UpdateComplexCommand : IRequest<SysResult<GetComplexDTO>>
 {
     [Range(1, int.MaxValue, ErrorMessage = ValidationCommonMessages.IdentifierRequired)]
     [Display(Name = "شناسه")]
