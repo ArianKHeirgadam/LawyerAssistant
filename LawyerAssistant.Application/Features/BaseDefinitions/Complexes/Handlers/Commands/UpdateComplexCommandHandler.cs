@@ -1,5 +1,6 @@
 ﻿using Application.Exceptions;
 using LawyerAssistant.Application.Contracts.Persistence;
+using LawyerAssistant.Application.DTOs.Base;
 using LawyerAssistant.Application.DTOs.BaseDefinitions;
 using LawyerAssistant.Application.Features.BaseDefinitions.Complexes.Commands;
 using LawyerAssistant.Application.Objects;
@@ -34,8 +35,7 @@ public class UpdateComplexCommandHandler : IRequestHandler<UpdateComplexCommand,
             {
                 Id = complex.Id,
                 Title = complex.Title,
-                CityId = complex.CityId,
-                CityTitle = complex.City?.Name ?? string.Empty
+                City = complex.City != null ? new GenericDTO() { Id = complex.City.Id, Title = complex.City.Name } : null
             },
             IsSuccess = true,
             Message = SystemCommonMessage.OperationDoneSuccessfully

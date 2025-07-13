@@ -1,5 +1,6 @@
 ﻿using Application.Exceptions;
 using LawyerAssistant.Application.Contracts.Persistence;
+using LawyerAssistant.Application.DTOs.Base;
 using LawyerAssistant.Application.DTOs.BaseDefinitions;
 using LawyerAssistant.Application.Features.BaseDefinitions.Branches.Commands;
 using LawyerAssistant.Application.Objects;
@@ -34,8 +35,7 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, S
             {
                 Id = branch.Id,
                 Title = branch.Title,
-                ComplexId = branch.ComplexId,
-                ComplexTitle = complexe.Title
+                Complex = branch.Complexe != null ? new GenericDTO() { Id = branch.Complexe.Id, Title = branch.Complexe.Title } : null
             },
             IsSuccess = true,
             Message = SystemCommonMessage.OperationDoneSuccessfully
