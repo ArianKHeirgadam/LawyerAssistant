@@ -1,5 +1,6 @@
 ﻿using Application.Exceptions;
 using LawyerAssistant.Application.Contracts.Persistence;
+using LawyerAssistant.Application.DTOs.Base;
 using LawyerAssistant.Application.DTOs.BaseDefinitions;
 using LawyerAssistant.Application.Features.BaseDefinitions.Branches.Queries;
 using LawyerAssistant.Application.Objects;
@@ -31,8 +32,7 @@ public class GetBranchByIdQueryHandler : IRequestHandler<GetBranchByIdQuery, Sys
             {
                 Id = branch.Id,
                 Title = branch.Title,
-                ComplexId = branch.ComplexId,
-                ComplexTitle = branch.Complexe?.Title ?? string.Empty
+                Complex = branch.Complexe != null ? new GenericDTO() { Id = branch.Complexe.Id, Title = branch.Complexe.Title } : null
             }
         };
     }

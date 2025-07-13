@@ -30,8 +30,7 @@ public class GetDemandsByIdQueryHandler : IRequestHandler<GetDemandsByIdQuery, S
             {
                 Id = demands.Id,
                 Title = demands.Name,
-                FileTypeId = demands.FilesType.Id,
-                FileTypeTitle = demands.FilesType.Name
+                FileType = demands.FilesType != null ? new GenericDTO() { Id = demands.FilesType.Id, Title = demands.FilesType.Name } : null
             }
         };
     }

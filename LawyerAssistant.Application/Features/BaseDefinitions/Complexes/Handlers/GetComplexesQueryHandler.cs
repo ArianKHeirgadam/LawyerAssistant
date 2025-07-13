@@ -1,4 +1,5 @@
 ﻿using LawyerAssistant.Application.Contracts.Persistence;
+using LawyerAssistant.Application.DTOs.Base;
 using LawyerAssistant.Application.DTOs.BaseDefinitions;
 using LawyerAssistant.Application.Extentions;
 using LawyerAssistant.Application.Features.BaseDefinitions.Complexes.Queries;
@@ -25,8 +26,7 @@ public class GetComplexesQueryHandler : IRequestHandler<GetComplexesQuery, SysRe
             {
                 Id = c.Id,
                 Title = c.Title,
-                CityId = c.CityId,
-                CityTitle = c.City != null ? c.City.Name : string.Empty
+                City = c.City != null ? new GenericDTO() { Id = c.City.Id, Title = c.City.Name } : null
             }).ToPagedListAsync(request.PageNumber, request.PageSize);
 
         return new SysResult<PagingResponse<GetComplexDTO>>

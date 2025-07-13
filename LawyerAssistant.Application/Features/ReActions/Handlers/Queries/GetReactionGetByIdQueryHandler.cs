@@ -1,5 +1,6 @@
 ﻿using LawyerAssistant.Application.Contracts.Persistence;
 using LawyerAssistant.Application.DTOs;
+using LawyerAssistant.Application.DTOs.Base;
 using LawyerAssistant.Application.Extentions;
 using LawyerAssistant.Application.Features.ReActions.Queries;
 using LawyerAssistant.Application.Objects;
@@ -30,22 +31,19 @@ public class GetReactionGetByIdQueryHandler : IRequestHandler<GetReactionGetById
         {
             IsSuccess = true,
             Message = SystemCommonMessage.OperationDoneSuccessfully,
-            Value = result == null ? null : new ReactionGetDTO
+            Value = result != null ? new ReactionGetDTO
             {
                 Id = result.Id,
-                CustomerId = result.Files.IsLegal ? result.Files.Customer.Id : result.Files.Legal.Id,
-                ActionTypeId = result.ActionTypeId,
-                BranchId = result.BranchId,
-                CustomerName = result.Files.IsLegal ? result.Files.Customer.FirstName + " " + result.Files.Customer.LastName : result.Files.Legal.CompanyName,
-                ActionTypeTitle = result.ActionType.Title,
+                Customer = new GenericDTO() { Id = result.Files.IsLegal ? result.Files.Customer.Id : result.Files.Legal.Id, Title = result.Files.IsLegal ? result.Files.Customer.FirstName + " " + result.Files.Customer.LastName : result.Files.Legal.CompanyName },
                 VisitDate = result.VisitDate.ToDateShortFormatString(_options),
+                ActionType = result.ActionType != null ? new GenericDTO() { Id = result.ActionType.Id, Title = result.ActionType.Title } : null,
+                Branch = result.Branch != null ? new GenericDTO() { Id = result.Branch.Id, Title = result.Branch.Title } : null,
                 VisitTime = result.VisitTime.HasValue ? result.VisitTime.Value.ToTimePersianString() : null,
-                BranchName = result.Branch.Title,
                 IsCompleted = result.IsCompleted,
                 GoingToBranch = result.GoingToBranch,
                 TimeIsImportant = result.TimeIsImportant,
                 IsLegal = result.Files.IsLegal
-            }
+            } : null
         };
     }
 }

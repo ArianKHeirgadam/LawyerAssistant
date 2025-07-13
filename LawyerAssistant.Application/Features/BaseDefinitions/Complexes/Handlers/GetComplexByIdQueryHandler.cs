@@ -1,5 +1,6 @@
 ﻿using Application.Exceptions;
 using LawyerAssistant.Application.Contracts.Persistence;
+using LawyerAssistant.Application.DTOs.Base;
 using LawyerAssistant.Application.DTOs.BaseDefinitions;
 using LawyerAssistant.Application.Features.BaseDefinitions.Complexes.Queries;
 using LawyerAssistant.Application.Objects;
@@ -28,8 +29,8 @@ public class GetComplexByIdQueryHandler : IRequestHandler<GetComplexByIdQuery, S
         {
             Id = complex.Id,
             Title = complex.Title,
-            CityId = complex.CityId,
-            CityTitle = complex.City?.Name ?? string.Empty
+            City = complex.City != null ? new GenericDTO() { Id = complex.City.Id, Title = complex.City.Name } : null,
+
         };
 
         return new SysResult<GetComplexDTO>

@@ -1,9 +1,10 @@
-﻿namespace LawyerAssistant.Application.DTOs.BaseDefinitions;
+﻿using LawyerAssistant.Application.DTOs.Base;
+
+namespace LawyerAssistant.Application.DTOs.BaseDefinitions;
 
 public class GetComplexDTO
 {
     public int Id { get; set; }
     public string Title { get; set; }
-    public int CityId { get; set; }
-    public string CityTitle { get; set; }
+    public GenericDTO? City { get; set; }
 }

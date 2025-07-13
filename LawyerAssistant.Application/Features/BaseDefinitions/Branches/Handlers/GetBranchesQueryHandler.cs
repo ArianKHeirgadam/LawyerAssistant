@@ -1,4 +1,5 @@
 ﻿using LawyerAssistant.Application.Contracts.Persistence;
+using LawyerAssistant.Application.DTOs.Base;
 using LawyerAssistant.Application.DTOs.BaseDefinitions;
 using LawyerAssistant.Application.Extentions;
 using LawyerAssistant.Application.Features.BaseDefinitions.Branches.Queries;
@@ -27,9 +28,8 @@ public class GetBranchesQueryHandler : IRequestHandler<GetBranchesQuery, SysResu
             {
                 Id = b.Id,
                 Title = b.Title,
-                ComplexId = b.ComplexId,
-                ComplexTitle = b.Complexe != null ? b.Complexe.Title : string.Empty
-            }).ToPagedListAsync(request.PageNumber, request.PageSize);
+                Complex = b.Complexe != null ? new GenericDTO() { Id = b.Complexe.Id, Title = b.Complexe.Title } : null
+        }).ToPagedListAsync(request.PageNumber, request.PageSize);
 
         return new SysResult<PagingResponse<GetBranchDTO>>
         {

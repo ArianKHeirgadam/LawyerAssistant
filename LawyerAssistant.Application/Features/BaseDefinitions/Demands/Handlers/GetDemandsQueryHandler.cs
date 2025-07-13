@@ -25,8 +25,7 @@ public class GetDemandsQueryHandler : IRequestHandler<GetDemandsQuery, SysResult
             {
                 Id = c.Id,
                 Title = c.Name,
-                FileTypeId = c.FilesType.Id,
-                FileTypeTitle = c.FilesType.Name
+                FileType = c.FilesType != null ? new GenericDTO() { Id = c.FilesType.Id , Title = c.FilesType.Name} : null
             }).ToPagedListAsync(request.PageNumber, request.PageSize);
 
 

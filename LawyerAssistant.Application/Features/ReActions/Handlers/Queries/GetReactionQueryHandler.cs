@@ -1,5 +1,6 @@
 ﻿using LawyerAssistant.Application.Contracts.Persistence;
 using LawyerAssistant.Application.DTOs;
+using LawyerAssistant.Application.DTOs.Base;
 using LawyerAssistant.Application.Extentions;
 using LawyerAssistant.Application.Features.ReActions.Queries;
 using LawyerAssistant.Application.Objects;
@@ -30,15 +31,11 @@ public class GetReactionQueryHandler : IRequestHandler<GetReactionQuery, SysResu
             .Select(r => new ReactionGetDTO
             {
                 Id = r.Id,
-                CustomerId = r.Files.IsLegal ? r.Files.Customer.Id : r.Files.Legal.Id,
-                ActionTypeId = r.ActionTypeId,
-                BranchId = r.BranchId,
-                CustomerName = r.Files.IsLegal ? r.Files.Customer.FirstName + " " + r.Files.Customer.LastName : r.Files.Legal.CompanyName,
-                ActionTypeTitle = r.ActionType.Title,
+                Customer =  new GenericDTO() { Id = r.Files.IsLegal ? r.Files.Customer.Id : r.Files.Legal.Id, Title = r.Files.IsLegal ? r.Files.Customer.FirstName + " " + r.Files.Customer.LastName : r.Files.Legal.CompanyName } ,
                 VisitDate = r.VisitDate.ToDateShortFormatString(_options),
                 VisitTime = r.VisitTime.HasValue ? r.VisitTime.Value.ToTimePersianString() : null,
-                BranchName = r.Branch.Title,
-
+                ActionType = r.ActionType != null ? new GenericDTO() { Id = r.ActionType.Id, Title = r.ActionType.Title } : null,
+                Branch = r.Branch != null ? new GenericDTO() { Id = r.Branch.Id, Title = r.Branch.Title } : null,
                 IsCompleted = r.IsCompleted,
                 GoingToBranch = r.GoingToBranch,
                 TimeIsImportant = r.TimeIsImportant,
