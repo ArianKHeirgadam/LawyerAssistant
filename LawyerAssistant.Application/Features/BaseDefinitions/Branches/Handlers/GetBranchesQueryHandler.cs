@@ -31,8 +31,8 @@ public class GetBranchesQueryHandler : IRequestHandler<GetBranchesQuery, SysResu
                 Title = b.Title,
                 Complex = b.Complexe == null ? null : new GetComplexDTO
                 {
-                    Id = b.Id,
-                    Title = b.Title,
+                    Id = b.Complexe.Id,
+                    Title = b.Complexe.Title,
                     City = b.Complexe.City != null ? new GenericDTO() { Id = b.Complexe.City.Id, Title = b.Complexe.City.Name } : null,
                     Province = b.Complexe.City != null ? new GenericDTO() { Id = b.Complexe.City.Province.Id, Title = b.Complexe.City.Province.Name } : null,
                 }

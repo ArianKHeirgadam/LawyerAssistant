@@ -41,8 +41,8 @@ public class UpdateBranchCommandHandler : IRequestHandler<UpdateBranchCommand, S
                 Title = branch.Title,
                 Complex = branch.Complexe == null ? null : new GetComplexDTO
                 {
-                    Id = branch.Id,
-                    Title = branch.Title,
+                    Id = branch.Complexe.Id,
+                    Title = branch.Complexe.Title,
                     City = complexe.City != null ? new GenericDTO() { Id = complexe.City.Id, Title = complexe.City.Name } : null,
                     Province = complexe.City != null ? new GenericDTO() { Id = complexe.City.Province.Id, Title = complexe.City.Province.Name } : null,
                 }
