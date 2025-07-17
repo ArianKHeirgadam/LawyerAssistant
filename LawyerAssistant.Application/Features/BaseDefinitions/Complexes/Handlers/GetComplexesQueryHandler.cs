@@ -22,11 +22,12 @@ public class GetComplexesQueryHandler : IRequestHandler<GetComplexesQuery, SysRe
     public async Task<SysResult<PagingResponse<GetComplexDTO>>> Handle(GetComplexesQuery request, CancellationToken cancellationToken)
     {
         var result = await _repository.Where(c =>string.IsNullOrEmpty(request.Title) || c.Title.Contains(request.Title))
-            .Include(c => c.City).Select(c => new GetComplexDTO
+            .Include(c => c.City).ThenInclude(c => c.Province).Select(c => new GetComplexDTO
             {
                 Id = c.Id,
                 Title = c.Title,
-                City = c.City != null ? new GenericDTO() { Id = c.City.Id, Title = c.City.Name } : null
+                City = c.City != null ? new GenericDTO() { Id = c.City.Id, Title = c.City.Name } : null,
+                Province = c.City != null ? new GenericDTO() { Id = c.City.Province.Id, Title = c.City.Province.Name } : null,
             }).ToPagedListAsync(request.PageNumber, request.PageSize);
 
         return new SysResult<PagingResponse<GetComplexDTO>>
