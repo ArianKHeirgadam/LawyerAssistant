@@ -35,7 +35,8 @@ public class UpdateComplexCommandHandler : IRequestHandler<UpdateComplexCommand,
             {
                 Id = complex.Id,
                 Title = complex.Title,
-                City = complex.City != null ? new GenericDTO() { Id = complex.City.Id, Title = complex.City.Name } : null
+                City = complex.City != null ? new GenericDTO() { Id = complex.City.Id, Title = complex.City.Name } : null,
+                Province = complex.City != null ? new GenericDTO() { Id = complex.City.Province.Id, Title = complex.City.Province.Name } : null,
             },
             IsSuccess = true,
             Message = SystemCommonMessage.OperationDoneSuccessfully
