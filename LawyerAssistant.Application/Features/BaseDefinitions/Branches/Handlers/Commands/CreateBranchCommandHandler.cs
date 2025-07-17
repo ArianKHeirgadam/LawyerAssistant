@@ -6,6 +6,7 @@ using LawyerAssistant.Application.Features.BaseDefinitions.Branches.Commands;
 using LawyerAssistant.Application.Objects;
 using LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace LawyerAssistant.Application.Features.BaseDefinitions.Branches.Handlers.Commands;
 
@@ -21,7 +22,7 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, S
 
     public async Task<SysResult<GetBranchDTO>> Handle(CreateBranchCommand request, CancellationToken cancellationToken)
     {
-        var complexe = await _complexRepository.FirstOrDefaultAsync(c => c.Id == request.ComplexId);
+        var complexe = await _complexRepository.Where(c => c.Id == request.ComplexId).Include(c => c.City).ThenInclude(c => c.Province).FirstOrDefaultAsync();
 
         if (complexe is null) throw new CustomException(SystemCommonMessage.DataWasNotFound);
 
@@ -35,7 +36,13 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, S
             {
                 Id = branch.Id,
                 Title = branch.Title,
-                Complex = branch.Complexe != null ? new GenericDTO() { Id = branch.Complexe.Id, Title = branch.Complexe.Title } : null
+                Complex = complexe == null ? null : new GetComplexDTO
+                {
+                    Id = complexe.Id,
+                    Title = complexe.Title,
+                    City = complexe.City != null ? new GenericDTO() { Id = complexe.City.Id, Title = complexe.City.Name } : null,
+                    Province = complexe.City != null ? new GenericDTO() { Id = complexe.City.Province.Id, Title = complexe.City.Province.Name } : null,
+                }
             },
             IsSuccess = true,
             Message = SystemCommonMessage.OperationDoneSuccessfully

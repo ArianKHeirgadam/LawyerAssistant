@@ -30,7 +30,6 @@ public class GetComplexByIdQueryHandler : IRequestHandler<GetComplexByIdQuery, S
             Id = complex.Id,
             Title = complex.Title,
             City = complex.City != null ? new GenericDTO() { Id = complex.City.Id, Title = complex.City.Name } : null,
-
         };
 
         return new SysResult<GetComplexDTO>

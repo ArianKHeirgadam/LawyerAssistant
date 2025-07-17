@@ -21,7 +21,7 @@ public class CreateComplexCommandHandler : IRequestHandler<CreateComplexCommand,
 
     public async Task<SysResult<GetComplexDTO>> Handle(CreateComplexCommand request, CancellationToken cancellationToken)
     {
-        await ValidateCity(request.CityId);
+        var city = await ValidateCity(request.CityId);
 
         var complex = new ComplexesModel(request.Title, request.CityId);
 
@@ -34,18 +34,19 @@ public class CreateComplexCommandHandler : IRequestHandler<CreateComplexCommand,
             {
                 Id = complex.Id,
                 Title = complex.Title,
-                City = complex.City != null ? new GenericDTO() { Id = complex.City.Id, Title = complex.City.Name } : null,
-                Province = complex.City != null ? new GenericDTO() { Id = complex.City.Province.Id, Title = complex.City.Province.Name } : null,
+                City = complex.City != null ? new GenericDTO() { Id = city.Id, Title = city.Name } : null,
+                Province = complex.City != null ? new GenericDTO() { Id = city.Province.Id, Title = city.Province.Name } : null,
             },
             IsSuccess = true,
             Message = SystemCommonMessage.OperationDoneSuccessfully
         };
     }
 
-    public async Task ValidateCity(int cityId)
+    public async Task<CitiesModel> ValidateCity(int cityId)
     {
-        var city = await _cityRepository.FirstOrDefaultAsync(b => b.Id == cityId);
+        var city = await _cityRepository.FirstOrDefaultAsync(b => b.Id == cityId, c => c.Province);
 
         if (city is null) throw new CustomException(SystemCommonMessage.CityIsNotFound);
+        return city;
     }
 }

@@ -22,7 +22,12 @@ public class UpdateComplexCommandHandler : IRequestHandler<UpdateComplexCommand,
 
     public async Task<SysResult<GetComplexDTO>> Handle(UpdateComplexCommand request, CancellationToken cancellationToken)
     {
-        var complex = await ValidateAndReturnComplexe(request);
+        var complex = await _repository.FirstOrDefaultAsync(c => c.Id == request.Id);
+
+        if (complex == null)
+            throw new CustomException(SystemCommonMessage.ComplexeIsNotFound);
+
+        var city = await ValidateAndReturnComplexe(request);
 
         complex.Edit(request.Title, request.CityId);
 
@@ -35,8 +40,8 @@ public class UpdateComplexCommandHandler : IRequestHandler<UpdateComplexCommand,
             {
                 Id = complex.Id,
                 Title = complex.Title,
-                City = complex.City != null ? new GenericDTO() { Id = complex.City.Id, Title = complex.City.Name } : null,
-                Province = complex.City != null ? new GenericDTO() { Id = complex.City.Province.Id, Title = complex.City.Province.Name } : null,
+                City = complex.City != null ? new GenericDTO() { Id = city.Id, Title = city.Name } : null,
+                Province = complex.City != null ? new GenericDTO() { Id = city.Province.Id, Title = city.Province.Name } : null,
             },
             IsSuccess = true,
             Message = SystemCommonMessage.OperationDoneSuccessfully
@@ -44,18 +49,12 @@ public class UpdateComplexCommandHandler : IRequestHandler<UpdateComplexCommand,
     }
 
 
-    public async Task<ComplexesModel> ValidateAndReturnComplexe(UpdateComplexCommand request)
+    public async Task<CitiesModel> ValidateAndReturnComplexe(UpdateComplexCommand request)
     {
-        var complex = await _repository.FirstOrDefaultAsync(c => c.Id == request.Id);
-
-        if (complex == null)
-            throw new CustomException(SystemCommonMessage.ComplexeIsNotFound);
-
-
-        var city = await _cityRepository.FirstOrDefaultAsync(b => b.Id == request.CityId);
+        var city = await _cityRepository.FirstOrDefaultAsync(b => b.Id == request.CityId , c => c.Province);
 
         if (city is null) throw new CustomException(SystemCommonMessage.CityIsNotFound);
 
-        return complex;
+        return city;
     }
 }

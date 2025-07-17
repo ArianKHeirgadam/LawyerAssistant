@@ -6,6 +6,7 @@ using LawyerAssistant.Application.Features.BaseDefinitions.Branches.Commands;
 using LawyerAssistant.Application.Objects;
 using LawyerAssistant.Domain.Aggregates.BasicDefinitionsModels;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Numerics;
 
 namespace LawyerAssistant.Application.Features.BaseDefinitions.Branches.Handlers.Commands;
@@ -23,7 +24,11 @@ public class UpdateBranchCommandHandler : IRequestHandler<UpdateBranchCommand, S
 
     public async Task<SysResult<GetBranchDTO>> Handle(UpdateBranchCommand request, CancellationToken cancellationToken)
     {
-        var branch = await ValidateAndGetTheBranch(request);
+        var branch = await _repository.FirstOrDefaultAsync(b => b.Id == request.Id);
+
+        if (branch is null) throw new CustomException(SystemCommonMessage.BrachnIsNotFound);
+
+        var complexe = await ValidateAndGetTheBranch(request);
 
         branch.Edit(request.Title, request.ComplexId);
         await _repository.SaveChangesAsync();
@@ -34,7 +39,13 @@ public class UpdateBranchCommandHandler : IRequestHandler<UpdateBranchCommand, S
             {
                 Id = branch.Id,
                 Title = branch.Title,
-                Complex = branch.Complexe != null ? new GenericDTO() { Id = branch.Complexe.Id, Title = branch.Complexe.Title } : null
+                Complex = branch.Complexe == null ? null : new GetComplexDTO
+                {
+                    Id = branch.Id,
+                    Title = branch.Title,
+                    City = complexe.City != null ? new GenericDTO() { Id = complexe.City.Id, Title = complexe.City.Name } : null,
+                    Province = complexe.City != null ? new GenericDTO() { Id = complexe.City.Province.Id, Title = complexe.City.Province.Name } : null,
+                }
             },
             IsSuccess = true,
             Message = SystemCommonMessage.OperationDoneSuccessfully
@@ -42,16 +53,12 @@ public class UpdateBranchCommandHandler : IRequestHandler<UpdateBranchCommand, S
     }
 
 
-    private async Task<BranchesModel> ValidateAndGetTheBranch(UpdateBranchCommand request)
+    private async Task<ComplexesModel> ValidateAndGetTheBranch(UpdateBranchCommand request)
     {
-        var branch = await _repository.FirstOrDefaultAsync(b => b.Id == request.Id);
-
-        if (branch is null) throw new CustomException(SystemCommonMessage.BrachnIsNotFound);
-
-        var complexe = await _complexRepository.FirstOrDefaultAsync(c => c.Id == request.ComplexId);
+        var complexe = await _complexRepository.Where(c => c.Id == request.ComplexId).Include(c => c.City).ThenInclude(c => c.Province).FirstOrDefaultAsync();
 
         if (complexe is null) throw new CustomException(SystemCommonMessage.ComplexeIsNotFound);
 
-        return branch;
+        return complexe;
     }
 }
