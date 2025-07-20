@@ -1,6 +1,7 @@
 ﻿using Application.Exceptions;
 using Domain.Aggregates.Identities;
 using LawyerAssistant.Application.Contracts.Persistence;
+using LawyerAssistant.Application.DTOs.Base;
 using LawyerAssistant.Application.DTOs.Identities;
 using LawyerAssistant.Application.Extentions;
 using LawyerAssistant.Application.Features.Identities.Customers.Queries;
@@ -38,8 +39,8 @@ public class GetCustomerDetailsQueryHandler : IRequestHandler<GetCustomerDetails
                 NationalCode = customer.NationalCode,
                 CreateDate = customer.CreateDate.ToDateShortFormatString(_options),
                 Address = customer.Address,
-                CityName = customer.City != null ? customer.City.Name : null,
-                ProvinceName = customer.Province != null ? customer.Province.Name : null,
+                City = customer.City != null ? new GenericDTO() { Id = customer.City.Id, Title = customer.City.Name } : null,
+                Province = customer.City != null ? new GenericDTO() { Id = customer.City.Province.Id, Title = customer.City.Province.Name } : null,
             }
         };
     }

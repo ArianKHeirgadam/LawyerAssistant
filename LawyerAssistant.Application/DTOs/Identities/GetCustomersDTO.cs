@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LawyerAssistant.Application.DTOs.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace LawyerAssistant.Application.DTOs.Identities;
 
@@ -17,12 +18,8 @@ public class GetCustomersDTO
 
     [Display(Name = "کد ملی")]
     public string NationalCode { get; set; }
-
-    [Display(Name = "شهر")]
-    public string CityName { get; set; }
-
-    [Display(Name = "استان")]
-    public string ProvinceName { get; set; }
+    public GenericDTO City { get; set; }
+    public GenericDTO Province { get; set; }
     [Display(Name = "تاریخ ایجاد")]
     public string CreateDate { get; set; }
 }

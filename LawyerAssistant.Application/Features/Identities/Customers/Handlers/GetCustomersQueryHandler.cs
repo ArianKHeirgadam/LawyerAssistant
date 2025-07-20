@@ -1,5 +1,6 @@
 ﻿using Domain.Aggregates.Identities;
 using LawyerAssistant.Application.Contracts.Persistence;
+using LawyerAssistant.Application.DTOs.Base;
 using LawyerAssistant.Application.DTOs.Identities;
 using LawyerAssistant.Application.Extentions;
 using LawyerAssistant.Application.Features.Identities.Customers.Queries;
@@ -26,8 +27,8 @@ public class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, SysRe
             .Include(c => c.City).Include(c => c.Province)
             .Select(c => new GetCustomersDTO
             {
-                CityName = c.City != null ? c.City.Name : null,
-                ProvinceName = c.Province != null ? c.Province.Name : null,
+                City = c.City != null ? new GenericDTO() { Id = c.City.Id, Title = c.City.Name } : null,
+                Province = c.City != null ? new GenericDTO() { Id = c.City.Province.Id, Title = c.City.Province.Name } : null,
                 CreateDate = c.CreateDate.ToDateShortFormatString(_options),
                 FirstName = c.FirstName,
                 Id = c.Id,

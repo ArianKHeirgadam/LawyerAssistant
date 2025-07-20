@@ -11,5 +11,5 @@ public class DeleteCustomerCommand : IRequest<SysResult>
     /// </summary>
     [Display(Name = "شناسه مشتری")]
     [Required(ErrorMessage = ValidationCommonMessages.Required)]
-    public int Id { get; set; }
+    public List<int> Ids { get; set; }
 }

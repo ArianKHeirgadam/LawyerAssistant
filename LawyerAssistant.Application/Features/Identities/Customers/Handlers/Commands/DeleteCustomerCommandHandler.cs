@@ -4,6 +4,7 @@ using LawyerAssistant.Application.Contracts.Persistence;
 using LawyerAssistant.Application.Features.Identities.Customers.Commands;
 using LawyerAssistant.Application.Objects;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace LawyerAssistant.Application.Features.Identities.Customers.Handlers.Commands;
 
@@ -18,14 +19,32 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
 
     public async Task<SysResult> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
-        var customer = await _repository.FirstOrDefaultAsync(c => c.Id == request.Id);
+        try
+        {
+            var actions = await _repository
+            .Where(x => request.Ids.Contains(x.Id))
+            .ToListAsync();
 
-        if (customer == null)
-            throw new CustomException(SystemCommonMessage.DataWasNotFound);
+            if (actions.Count != request.Ids.Count)
+                throw new CustomException(SystemCommonMessage.DataWasNotFound);
 
-        _repository.Delete(customer);
-        await _repository.SaveChangesAsync();
+            _repository.DeleteRange(actions);
+            await _repository.SaveChangesAsync();
 
-        return new SysResult();
+            return new SysResult
+            {
+                IsSuccess = true,
+                Message = SystemCommonMessage.OperationDoneSuccessfully
+            };
+
+        }
+        catch (Exception ex)
+        {
+            return new SysResult
+            {
+                IsSuccess = false,
+                Message = SystemCommonMessage.CantRemoveBecauseThereIsDependy
+            };
+        }
     }
 }
