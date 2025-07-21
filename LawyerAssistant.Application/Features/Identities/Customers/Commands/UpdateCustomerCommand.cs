@@ -1,10 +1,11 @@
-﻿using LawyerAssistant.Application.Objects;
+﻿using LawyerAssistant.Application.DTOs.Identities;
+using LawyerAssistant.Application.Objects;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace LawyerAssistant.Application.Features.Identities.Customers.Commands;
 
-public class UpdateCustomerCommand : IRequest<SysResult>
+public class UpdateCustomerCommand : IRequest<SysResult<GetCustomerDetailsDTO>>
 {
     
 
@@ -52,7 +53,7 @@ public class UpdateCustomerCommand : IRequest<SysResult>
     /// </summary>
     [Display(Name = "تاریخ تولد")]
     [Required(ErrorMessage = ValidationCommonMessages.Required)]
-    public DateTime BirthDate { get; set; }
+    public string BirthDate { get; set; }
 
     /// <summary>
     /// آدرس مشتری

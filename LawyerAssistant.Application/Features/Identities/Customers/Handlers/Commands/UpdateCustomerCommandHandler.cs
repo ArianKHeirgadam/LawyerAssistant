@@ -1,22 +1,25 @@
 ﻿using Application.Exceptions;
 using Domain.Aggregates.Identities;
 using LawyerAssistant.Application.Contracts.Persistence;
+using LawyerAssistant.Application.DTOs.Identities;
 using LawyerAssistant.Application.Features.Identities.Customers.Commands;
+using LawyerAssistant.Application.Features.Identities.Customers.Queries;
 using LawyerAssistant.Application.Objects;
 using MediatR;
 
 namespace LawyerAssistant.Application.Features.Identities.Customers.Handlers.Commands;
 
-public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, SysResult>
+public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, SysResult<GetCustomerDetailsDTO>>
 {
     private readonly IRepository<CustomersModel> _repository;
-
-    public UpdateCustomerCommandHandler(IRepository<CustomersModel> repository)
+    private readonly ISender _sender;
+    public UpdateCustomerCommandHandler(IRepository<CustomersModel> repository, ISender sender)
     {
         _repository = repository;
+        _sender = sender;
     }
 
-    public async Task<SysResult> Handle(UpdateCustomerCommand model, CancellationToken cancellationToken)
+    public async Task<SysResult<GetCustomerDetailsDTO>> Handle(UpdateCustomerCommand model, CancellationToken cancellationToken)
     {
         var customer = await _repository.FirstOrDefaultAsync(c => c.Id == model.Id);
 
@@ -36,7 +39,6 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
 
         _repository.Update(customer);
         await _repository.SaveChangesAsync();
-
-        return new SysResult() { IsSuccess = true, Message = SystemCommonMessage.OperationDoneSuccessfully };
+        return await _sender.Send(new GetCustomerDetailsQuery() { Id = customer.Id });
     }
 }

@@ -22,4 +22,6 @@ public class GetCustomersDTO
     public GenericDTO Province { get; set; }
     [Display(Name = "تاریخ ایجاد")]
     public string CreateDate { get; set; }
+    public string BirthDate { get; set; }
+    public string Address { get; set; }
 }

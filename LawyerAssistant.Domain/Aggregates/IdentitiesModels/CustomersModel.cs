@@ -17,7 +17,7 @@ namespace Domain.Aggregates.Identities
 
 
         // Constructor for Create
-        public CustomersModel(string mobileNumber, string firstName, string lastName, string nationalCode, DateTime birthDate, string address, int? cityId, int? provinceId)
+        public CustomersModel(string mobileNumber, string firstName, string lastName, string nationalCode, string birthDate, string address, int? cityId, int? provinceId)
         {
             MobileNumber = mobileNumber;
             FirstName = firstName;
@@ -31,7 +31,7 @@ namespace Domain.Aggregates.Identities
             Status = Status.Active;
         }
 
-        public void EditDetails(string mobileNumber, string firstName, string lastName, string nationalCode, DateTime birthDate, string address, int? cityId, int? provinceId)
+        public void EditDetails(string mobileNumber, string firstName, string lastName, string nationalCode, string birthDate, string address, int? cityId, int? provinceId)
         {
             MobileNumber = mobileNumber;
             FirstName = firstName;
@@ -93,7 +93,7 @@ namespace Domain.Aggregates.Identities
         /// <summary>
         ///  کد ملی
         /// </summary>
-        public DateTime BirthDate { get; set; }
+        public string BirthDate { get; set; }
         // =========================================================================
         /// <summary>
         ///  تاریخ ایجاد کابر

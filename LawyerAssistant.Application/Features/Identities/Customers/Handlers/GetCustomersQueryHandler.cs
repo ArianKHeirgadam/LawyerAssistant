@@ -34,7 +34,9 @@ public class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, SysRe
                 Id = c.Id,
                 LastName = c.LastName,
                 MobileNumber = c.MobileNumber,
-                NationalCode = c.NationalCode
+                NationalCode = c.NationalCode,
+                BirthDate = c.BirthDate,                
+                Address = c.Address
             }).ToPagedListAsync(request.PageNumber, request.PageSize);
 
 

@@ -1,4 +1,5 @@
 ﻿using LawyerAssistant.Application.DTOs.Base;
+using LawyerAssistant.Application.Objects;
 using System.ComponentModel.DataAnnotations;
 
 namespace LawyerAssistant.Application.DTOs.Identities;
@@ -25,4 +26,10 @@ public class GetCustomerDetailsDTO
     public string CreateDate { get; set; }
     [Display(Name = "آدرس")]
     public string Address { get; set; }
+    public string BirthDate { get; set; }
+
+    public static implicit operator GetCustomerDetailsDTO?(SysResult<GetCustomerDetailsDTO>? v)
+    {
+        throw new NotImplementedException();
+    }
 }

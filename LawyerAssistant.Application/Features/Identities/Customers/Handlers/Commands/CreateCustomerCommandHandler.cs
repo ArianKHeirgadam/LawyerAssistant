@@ -1,20 +1,24 @@
 ﻿using Application.Exceptions;
 using Domain.Aggregates.Identities;
 using LawyerAssistant.Application.Contracts.Persistence;
+using LawyerAssistant.Application.DTOs.Identities;
 using LawyerAssistant.Application.Features.Identities.Customers.Commands;
+using LawyerAssistant.Application.Features.Identities.Customers.Queries;
 using LawyerAssistant.Application.Objects;
 using MediatR;
 
 namespace LawyerAssistant.Application.Features.Identities.Customers.Handlers.Commands;
 
-public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, SysResult>
+public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, SysResult<GetCustomerDetailsDTO>>
 {
     private readonly IRepository<CustomersModel> _repository;
-    public CreateCustomerCommandHandler(IRepository<CustomersModel> repository)
+    private readonly ISender _sender;
+    public CreateCustomerCommandHandler(IRepository<CustomersModel> repository, ISender sender)
     {
         _repository = repository;
+        _sender = sender;
     }
-    public async Task<SysResult> Handle(CreateCustomerCommand model, CancellationToken cancellationToken)
+    public async Task<SysResult<GetCustomerDetailsDTO>> Handle(CreateCustomerCommand model, CancellationToken cancellationToken)
     {
 
         var mobileNumberExists = await _repository.FirstOrDefaultAsync(c => c.MobileNumber == model.MobileNumber);
@@ -27,7 +31,7 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
 
         await _repository.AddAsync(customer);
         await _repository.SaveChangesAsync();
-
-        return new SysResult() { IsSuccess = true, Message = SystemCommonMessage.OperationDoneSuccessfully };
+        return  await _sender.Send(new GetCustomerDetailsQuery() { Id = customer.Id });
+        
     }
 }
