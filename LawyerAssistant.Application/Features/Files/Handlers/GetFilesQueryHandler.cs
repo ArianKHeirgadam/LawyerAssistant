@@ -1,5 +1,6 @@
 ﻿using LawyerAssistant.Application.Contracts.Persistence;
 using LawyerAssistant.Application.DTOs;
+using LawyerAssistant.Application.DTOs.Base;
 using LawyerAssistant.Application.Extentions;
 using LawyerAssistant.Application.Features.Files.Queries;
 using LawyerAssistant.Application.Objects;
@@ -37,14 +38,10 @@ public class GetFilesQueryHandler : IRequestHandler<GetFilesQuery, SysResult<Pag
                 Id = f.Id,
                 IsLegal = f.IsLegal,
                 Title = f.Title,
-                CustomerId = !f.IsLegal ? f.CustomerId : (int?)null,
-                CustomerFullName = f.IsLegal && f.Customer == null ? null : f.Customer.FirstName + " " + f.Customer.LastName,
-                LegalId = f.IsLegal ? f.LegalId : (int?)null,
-                LegalCompanyName = f.IsLegal ? f.Legal.CompanyName : null,
-                DemandId = f.DemandId,
-                DemandTitle = f.Demand.Name,
-                FileTypeId = f.FileTypeId,
-                FileTypeTitle = f.FilesTypes.Name,
+                Demand = f.Demand != null ? new GenericDTO() { Id = f.Demand.Id, Title = f.Demand.Name } : null,
+                FileType = f.FilesTypes != null ? new GenericDTO() { Id = f.FilesTypes.Id , Title = f.FilesTypes.Name }: null,
+                Legal = !f.IsLegal ? new UserGenericDTO() { Id = f.Legal.Id, Name = f.Legal.CompanyName } : null,
+                Customer = !f.IsLegal ? new UserGenericDTO() { Id = f.Customer.Id, Name = f.Customer.FirstName + " " + f.Customer.LastName } : null,
             }).ToPagedListAsync(request.PageNumber, request.PageSize);
 
         return new SysResult<PagingResponse<FilesListDto>>

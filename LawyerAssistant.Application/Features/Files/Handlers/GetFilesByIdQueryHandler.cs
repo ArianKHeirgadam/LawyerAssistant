@@ -1,11 +1,12 @@
-﻿using LawyerAssistant.Application.Contracts.Persistence;
-using LawyerAssistant.Application.DTOs.BaseDefinitions;
+﻿using Application.Exceptions;
+using LawyerAssistant.Application.Contracts.Persistence;
 using LawyerAssistant.Application.DTOs;
+using LawyerAssistant.Application.DTOs.Base;
+using LawyerAssistant.Application.DTOs.BaseDefinitions;
 using LawyerAssistant.Application.Features.Files.Queries;
 using LawyerAssistant.Application.Objects;
 using LawyerAssistant.Domain.Aggregates;
 using MediatR;
-using Application.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace LawyerAssistant.Application.Features.Files.Handlers;
@@ -39,14 +40,10 @@ public class GetFilesByIdQueryHandler : IRequestHandler<GetFilesByIdQuery, SysRe
                 Id = file.Id,
                 IsLegal = file.IsLegal,
                 Title = file.Title,
-                CustomerId = file.IsLegal ? null : (int?)file.CustomerId,
-                CustomerFullName = file.IsLegal && file.Customer == null ? null : file.Customer.FirstName + " " + file.Customer.LastName,
-                LegalId = file.IsLegal ? (int?)file.LegalId : null,
-                LegalCompanyName = file.IsLegal ? file.Legal?.CompanyName : null,
-                DemandId = file.DemandId,
-                DemandTitle = file.Demand?.Name,
-                FileTypeId = file.FileTypeId,
-                FileTypeTitle = file.FilesTypes?.Name,
+                Demand = file.Demand != null ? new GenericDTO() { Id = file.Demand.Id, Title = file.Demand.Name } : null,
+                FileType = file.FilesTypes != null ? new GenericDTO() {Id = file.FilesTypes.Id, Title = file.FilesTypes.Name } : null,
+                Legal = !file.IsLegal ? new UserGenericDTO() {Id = file.Legal.Id, Name = file.Legal.CompanyName } : null,
+                Customer = !file.IsLegal ? new UserGenericDTO() { Id = file.Customer.Id, Name = file.Customer.FirstName + " " + file.Customer.LastName } : null,
             }
         };
     }

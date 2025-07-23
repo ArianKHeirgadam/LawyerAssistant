@@ -1,10 +1,11 @@
-﻿using LawyerAssistant.Application.Objects;
+﻿using LawyerAssistant.Application.DTOs.Identities;
+using LawyerAssistant.Application.Objects;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace LawyerAssistant.Application.Features.Identities.Legals.Commands;
 
-public class UpdateLegalCommand : IRequest<SysResult>
+public class UpdateLegalCommand : IRequest<SysResult<GetLegalCustomerDetailsDTO>>
 {
     [Required(ErrorMessage = ValidationCommonMessages.Required)]
     public int Id { get; set; }

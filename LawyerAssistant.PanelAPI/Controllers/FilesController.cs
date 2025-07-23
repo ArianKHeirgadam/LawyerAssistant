@@ -1,4 +1,5 @@
-﻿using LawyerAssistant.Application.DTOs.Base;
+﻿using LawyerAssistant.Application.DTOs;
+using LawyerAssistant.Application.DTOs.Base;
 using LawyerAssistant.Application.Features.Files.Commands;
 using LawyerAssistant.Application.Features.Files.Queries;
 using MediatR;
@@ -39,16 +40,16 @@ public class FilesController : ControllerBase
 
     #region Commands
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateFilesCommand command)
+    public async Task<IActionResult> Create([FromBody] CreateFileDto command)
     {
-        var result = await _sender.Send(command);
+        var result = await _sender.Send(new CreateFilesCommand() { Dto = });
         return Ok(result);
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromBody] UpdateFilesCommand command)
+    public async Task<IActionResult> Update([FromBody] FilesUpdateDto command)
     {
-        var result = await _sender.Send(command);
+        var result = await _sender.Send(new UpdateFilesCommand() { Dto = command });
         return Ok(result);
     }
     [HttpDelete]

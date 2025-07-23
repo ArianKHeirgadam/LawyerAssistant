@@ -24,7 +24,8 @@ public class GetLegalCustomersQueryHandler : IRequestHandler<GetLegalsQuery, Sys
             {
                 Id = c.Id,
                 CompanyName = c.CompanyName,
-                LegalNationalCode = c.LegalNationalCode
+                LegalNationalCode = c.LegalNationalCode,
+                
             }).ToPagedListAsync(request.PageNumber, request.PageSize);
 
         return new SysResult<PagingResponse<GetLegalCustomersDTO>>

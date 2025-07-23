@@ -7,6 +7,6 @@ public class GetLegalCustomerDetailsDTO
     public string CompanyName { get; set; }
     public string LegalNationalCode { get; set; }
     public string Address { get; set; }
-    public List<GenericDTO> Customers { get; set; }
+    public List<GetCustomersDTO> Customers { get; set; }
 }
 
