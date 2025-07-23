@@ -42,7 +42,7 @@ public class FilesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateFileDto command)
     {
-        var result = await _sender.Send(new CreateFilesCommand() { Dto = });
+        var result = await _sender.Send(new CreateFilesCommand() { Dto = command });
         return Ok(result);
     }
 
