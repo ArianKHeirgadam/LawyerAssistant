@@ -23,19 +23,35 @@ public class DeleteLegalCustomerCommandHandler : IRequestHandler<DeleteLegalComm
 
     public async Task<SysResult> Handle(DeleteLegalCommand model, CancellationToken cancellationToken)
     {
-        var legal = await _legalRepository.FirstOrDefaultAsync(c => c.Id == model.Id);
-        if (legal == null)
-            throw new CustomException("مشتری حقوقی یافت نشد.");
-
-        var customers = _customerRepository.Where(c => c.LegalCompanyId == legal.Id).ToList();
-        foreach (var customer in customers)
+        try
         {
-            customer.LegalCompanyId = null;
+            foreach (var id in model.Ids)
+            {
+                var legal = await _legalRepository.FirstOrDefaultAsync(c => c.Id == id);
+                if (legal == null)
+                    throw new CustomException($"مشتری حقوقی با شناسه {id} یافت نشد.");
+
+                var customers = _customerRepository.Where(c => c.LegalCompanyId == legal.Id).ToList();
+                foreach (var customer in customers)
+                {
+                    customer.LegalCompanyId = null;
+                }
+
+                _legalRepository.Delete(legal);
+            }
+
+            await _legalRepository.SaveChangesAsync();
+
+            return new SysResult
+            {
+                IsSuccess = true,
+                Message = SystemCommonMessage.OperationDoneSuccessfully
+            };
         }
-
-        _legalRepository.Delete(legal);
-        await _legalRepository.SaveChangesAsync();
-
-        return new SysResult() { IsSuccess = true, Message = SystemCommonMessage.OperationDoneSuccessfully };
+        catch (Exception)
+        {
+            throw new CustomException(SystemCommonMessage.CantRemoveBecauseThereIsDependy);
+        }
+        
     }
 }

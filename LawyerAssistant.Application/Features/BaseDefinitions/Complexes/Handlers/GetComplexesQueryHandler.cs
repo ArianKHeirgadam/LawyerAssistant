@@ -21,7 +21,8 @@ public class GetComplexesQueryHandler : IRequestHandler<GetComplexesQuery, SysRe
 
     public async Task<SysResult<PagingResponse<GetComplexDTO>>> Handle(GetComplexesQuery request, CancellationToken cancellationToken)
     {
-        var result = await _repository.Where(c =>string.IsNullOrEmpty(request.Title) || c.Title.Contains(request.Title))
+        var result = await _repository.Where(c =>!string.IsNullOrEmpty(request.Title) ?c.Title.Contains(request.Title) : true)
+            .Where(c => !string.IsNullOrEmpty(request.City) ? c.City.Name.Contains(request.City) :true)
             .Include(c => c.City).ThenInclude(c => c.Province).Select(c => new GetComplexDTO
             {
                 Id = c.Id,

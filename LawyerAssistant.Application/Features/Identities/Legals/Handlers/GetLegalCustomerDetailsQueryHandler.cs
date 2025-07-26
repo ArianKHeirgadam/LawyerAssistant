@@ -40,13 +40,13 @@ public class GetLegalCustomerDetailsQueryHandler : IRequestHandler<GetLegalDetai
                 City = c.City != null ? new GenericDTO() { Id = c.City.Id, Title = c.City.Name } : null,
                 Province = c.City != null ? new GenericDTO() { Id = c.City.Province.Id, Title = c.City.Province.Name } : null,
                 CreateDate = c.CreateDate.ToDateShortFormatString(_options),
-                FirstName = c.FirstName,
-                Id = c.Id,
-                LastName = c.LastName,
                 MobileNumber = c.MobileNumber,
                 NationalCode = c.NationalCode,
                 BirthDate = c.BirthDate,
-                Address = c.Address
+                FirstName = c.FirstName,
+                LastName = c.LastName,
+                Address = c.Address,
+                Id = c.Id
             }).ToList()
         };
 

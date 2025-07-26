@@ -7,4 +7,5 @@ namespace LawyerAssistant.Application.Features.BaseDefinitions.Branches.Queries;
 public class GetBranchesQuery : PagingRequest, IRequest<SysResult<PagingResponse<GetBranchDTO>>>
 {
     public string? Title { get; set; }
+    public string? Complex { get; set; }
 }

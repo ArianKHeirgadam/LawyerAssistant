@@ -41,11 +41,7 @@ public class DeleteBranchCommandHandler : IRequestHandler<DeleteBranchCommand, S
         }
         catch (Exception ex)
         {
-            return new SysResult
-            {
-                IsSuccess = false,
-                Message = SystemCommonMessage.CantRemoveBecauseThereIsDependy
-            };
+            throw new CustomException(SystemCommonMessage.CantRemoveBecauseThereIsDependy);
         }
     }
 }

@@ -19,7 +19,9 @@ public class GetLegalCustomersQueryHandler : IRequestHandler<GetLegalsQuery, Sys
 
     public async Task<SysResult<PagingResponse<GetLegalCustomersDTO>>> Handle(GetLegalsQuery request, CancellationToken cancellationToken)
     {
-        var result = await _repository.Where(c => string.IsNullOrEmpty(request.CompanyName) || c.CompanyName.Contains(request.CompanyName))
+        var result = await _repository
+            .Where(c => string.IsNullOrEmpty(request.CompanyName) || c.CompanyName.Contains(request.CompanyName))
+            .Where(c => string.IsNullOrEmpty(request.LegalNationalCode) || c.LegalNationalCode.Contains(request.LegalNationalCode))
             .Select(c => new GetLegalCustomersDTO
             {
                 Id = c.Id,

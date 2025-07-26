@@ -7,5 +7,5 @@ namespace LawyerAssistant.Application.Features.Identities.Legals.Commands;
 public class DeleteLegalCommand : IRequest<SysResult>
 {
     [Required(ErrorMessage = ValidationCommonMessages.Required)]
-    public int Id { get; set; }
+    public List<int> Ids { get; set; }
 }

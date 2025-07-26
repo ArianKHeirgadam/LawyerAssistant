@@ -40,11 +40,7 @@ public class DeleteComplexCommandHandler : IRequestHandler<DeleteComplexCommand,
         }
         catch (Exception ex)
         {
-            return new SysResult
-            {
-                IsSuccess = false,
-                Message = SystemCommonMessage.CantRemoveBecauseThereIsDependy
-            };
+            throw new CustomException(SystemCommonMessage.CantRemoveBecauseThereIsDependy);
         }
     }
 }

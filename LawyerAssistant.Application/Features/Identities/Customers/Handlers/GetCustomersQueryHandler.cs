@@ -23,7 +23,10 @@ public class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, SysRe
     public async Task<SysResult<PagingResponse<GetCustomersDTO>>> Handle(GetCustomersQuery request, CancellationToken cancellationToken)
     {
         var result = await _repository
-            .Where(c => !string.IsNullOrEmpty(request.FullName) ? (c.FirstName + " " + c.LastName).Contains(request.FullName) : c.Legal == null)
+            .Where(c => !string.IsNullOrEmpty(request.FirstName) ? c.FirstName.Contains(request.FirstName) : c.Legal == null)
+            .Where(c => !string.IsNullOrEmpty(request.LastName) ? c.LastName.Contains(request.LastName) : c.Legal == null)
+            .Where(c => !string.IsNullOrEmpty(request.NationalCode) ? c.NationalCode.Contains(request.NationalCode) : c.Legal == null)
+            .Where(c => !string.IsNullOrEmpty(request.MobileNumber) ? c.MobileNumber.Contains(request.MobileNumber) : c.Legal == null)
             .Include(c => c.City).Include(c => c.Province)
             .Select(c => new GetCustomersDTO
             {

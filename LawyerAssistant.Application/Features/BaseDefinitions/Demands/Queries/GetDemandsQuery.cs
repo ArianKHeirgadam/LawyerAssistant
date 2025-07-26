@@ -8,4 +8,5 @@ namespace LawyerAssistant.Application.Features.BaseDefinitions.Cities.Queries;
 public class GetDemandsQuery : PagingRequest, IRequest<SysResult<PagingResponse<GetDemandsDTO>>>
 {
     public string? Title { get; set; }
+    public string? FileTypes { get; set; }
 }

@@ -20,6 +20,7 @@ public class GetAllActionTypesQueryHandler : IRequestHandler<GetAllActionTypesQu
     public async Task<SysResult<PagingResponse<ActionDto>>> Handle(GetAllActionTypesQuery request, CancellationToken cancellationToken)
     {
         var result = await _repository.Where(a => !string.IsNullOrWhiteSpace(request.Title) ? a.Title.Contains(request.Title) : true)
+            .Where(a => request.Priority != 0 || request.Priority != null ? a.Priority == request.Priority : true)
             .Select(a => new ActionDto
             {
                 Id = a.Id,

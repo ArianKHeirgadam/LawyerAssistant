@@ -22,11 +22,13 @@ public class GetBranchesQueryHandler : IRequestHandler<GetBranchesQuery, SysResu
 
     public async Task<SysResult<PagingResponse<GetBranchDTO>>> Handle(GetBranchesQuery request, CancellationToken cancellationToken)
     {
-        Expression<Func<BranchesModel, bool>> filter = b =>
-            string.IsNullOrEmpty(request.Title) || b.Title.Contains(request.Title);
 
-        var result = await _repository.Where(filter).Include(b => b.Complexe).ThenInclude( c=> c.City).ThenInclude(c => c.Province).Select(b => new GetBranchDTO
-            {
+        var result = await _repository.Where(c => !string.IsNullOrWhiteSpace(request.Title) ? c.Title.Contains(request.Title)  : true)
+            .Include(b => b.Complexe).ThenInclude( c=> c.City).ThenInclude(c => c.Province)
+            .Where(c => !string.IsNullOrWhiteSpace(request.Complex) ? c.Complexe.Title.Contains(request.Complex) : true)
+            .Select(b => new GetBranchDTO
+            
+        {
                 Id = b.Id,
                 Title = b.Title,
                 Complex = b.Complexe == null ? null : new GetComplexDTO

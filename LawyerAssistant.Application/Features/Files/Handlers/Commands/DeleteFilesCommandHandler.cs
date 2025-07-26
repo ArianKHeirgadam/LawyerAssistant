@@ -40,11 +40,7 @@ public class DeleteFilesCommandHandler : IRequestHandler<DeleteFilesCommand, Sys
         }
         catch (Exception ex)
         {
-            return new SysResult
-            {
-                IsSuccess = false,
-                Message = SystemCommonMessage.CantRemoveBecauseThereIsDependy
-            };
+            throw new CustomException(SystemCommonMessage.CantRemoveBecauseThereIsDependy);
         }
     }
 }

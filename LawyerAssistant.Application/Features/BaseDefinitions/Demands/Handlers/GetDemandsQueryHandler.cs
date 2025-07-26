@@ -20,6 +20,7 @@ public class GetDemandsQueryHandler : IRequestHandler<GetDemandsQuery, SysResult
     public async Task<SysResult<PagingResponse<GetDemandsDTO>>> Handle(GetDemandsQuery request, CancellationToken cancellationToken)
     {
         var result =  await _repository.Where(c => !string.IsNullOrEmpty(request.Title) ? c.Name.Contains(request.Title) : true)
+            .Where(c => !string.IsNullOrEmpty(request.FileTypes) ? c.FilesType.Name.Contains(request.FileTypes) : true)
             .Include(c => c.FilesType)
             .Select(c => new GetDemandsDTO
             {
