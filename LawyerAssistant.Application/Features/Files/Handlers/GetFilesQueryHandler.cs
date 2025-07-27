@@ -40,7 +40,7 @@ public class GetFilesQueryHandler : IRequestHandler<GetFilesQuery, SysResult<Pag
                 Title = f.Title,
                 Demand = f.Demand != null ? new GenericDTO() { Id = f.Demand.Id, Title = f.Demand.Name } : null,
                 FileType = f.FilesTypes != null ? new GenericDTO() { Id = f.FilesTypes.Id , Title = f.FilesTypes.Name }: null,
-                Legal = f.IsLegal ? new UserGenericDTO() { Id = f.Legal.Id, Name = f.Legal.CompanyName } : null,
+                Legal = f.IsLegal ? new GetLegalDTO() { Id = f.Legal.Id, CompanyName = f.Legal.CompanyName } : null,
                 Customer = !f.IsLegal ? new UserGenericDTO() { Id = f.Customer.Id, Name = f.Customer.FirstName + " " + f.Customer.LastName } : null,
             }).ToPagedListAsync(request.PageNumber, request.PageSize);
 
