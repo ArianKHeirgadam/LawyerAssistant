@@ -2,7 +2,6 @@
 using LawyerAssistant.Application.Contracts.Persistence;
 using LawyerAssistant.Application.DTOs;
 using LawyerAssistant.Application.DTOs.Base;
-using LawyerAssistant.Application.DTOs.BaseDefinitions;
 using LawyerAssistant.Application.Features.Files.Queries;
 using LawyerAssistant.Application.Objects;
 using LawyerAssistant.Domain.Aggregates;
@@ -42,7 +41,7 @@ public class GetFilesByIdQueryHandler : IRequestHandler<GetFilesByIdQuery, SysRe
                 Title = file.Title,
                 Demand = file.Demand != null ? new GenericDTO() { Id = file.Demand.Id, Title = file.Demand.Name } : null,
                 FileType = file.FilesTypes != null ? new GenericDTO() {Id = file.FilesTypes.Id, Title = file.FilesTypes.Name } : null,
-                Legal = file.IsLegal ? new UserGenericDTO() {Id = file.Legal.Id, Name = file.Legal.CompanyName } : null,
+                Legal = file.IsLegal ? new GetLegalDTO() {Id = file.Legal.Id, CompanyName = file.Legal.CompanyName } : null,
                 Customer = !file.IsLegal ? new UserGenericDTO() { Id = file.Customer.Id, Name = file.Customer.FirstName + " " + file.Customer.LastName } : null,
             }
         };
