@@ -1,22 +1,41 @@
 workflow:
   rules:
     - if: '$CI_COMMIT_BRANCH == "stable" || $CI_COMMIT_BRANCH == "develop"'
+      changes:
+        - version.yaml
     - when: never
 
 default:
   tags: [win]
 
 stages:
+  - version
   - deploy
 
 variables:
   DOTNET_CLI_TELEMETRY_OPTOUT: "1"
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
+  VERSION_PROPS_PATH: "version.props"
 
   SOLUTION: "LawyerAssistant.sln"
   PUBLISH_ROOT: "publish"
 
   API_CSPROJ: "LawyerAssistant.PanelAPI/LawyerAssistant.PanelAPI.csproj"
+
+
+Tag-Check:
+  stage: version
+  script:
+    - echo "Adding Tag For Release..."
+    - $APP_VERSION=$(yq e '.version' version.yaml);
+    - if ($(git tag -l "$APP_VERSION")) {
+      echo "Tag $APP_VERSION Already Exists. Stopping The Pipeline...";
+      exit 1;
+      } else {
+      echo "Tag $APP_VERSION does not exist. Creating and pushing tag...";
+      git tag -a $APP_VERSION -m "Release version $APP_VERSION";
+      git push https://root:$CI_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git --tags;
+      }
 
 .deploy_job_template: &deploy_job_template
   tags: [win]
