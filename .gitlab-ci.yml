@@ -1,15 +1,12 @@
 workflow:
   rules:
     - if: '$CI_COMMIT_BRANCH == "stable" || $CI_COMMIT_BRANCH == "develop"'
-      changes:
-        - version.yaml
     - when: never
 
 default:
   tags: [win]
 
 stages:
-  - version
   - deploy
 
 variables:
@@ -17,26 +14,10 @@ variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
   VERSION_PROPS_PATH: "version.props"
 
-  SOLUTION: "SahadMarket_NetCore.sln"
+  SOLUTION: "LawyerAssistant.sln"
   PUBLISH_ROOT: "publish"
 
-#   PANEL_CSPROJ: "PanelPresentationLayer/PanelPresentationLayer.csproj"
-#   SITE_CSPROJ: "WebPresentationLayer/WebPresentationLayer.csproj"
-  API_CSPROJ: "WebServicePresentationLayer/WebServicePresentationLayer.csproj"
-
-# Tag-Check:
-#   stage: version
-#   script:
-#     - echo "Adding Tag For Release..."
-#     - $APP_VERSION=$(yq e '.version' version.yaml);
-#     - if ($(git tag -l "$APP_VERSION")) {
-#       echo "Tag $APP_VERSION Already Exists. Stopping The Pipeline...";
-#       exit 1;
-#       } else {
-#       echo "Tag $APP_VERSION does not exist. Creating and pushing tag...";
-#       git tag -a $APP_VERSION -m "Release version $APP_VERSION";
-#       git push https://root:$CI_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git --tags;
-#       }
+  API_CSPROJ: "LawyerAssistant.PanelAPI/LawyerAssistant.PanelAPI.csproj"
 
 .deploy_job_template: &deploy_job_template
   tags: [win]
@@ -52,11 +33,11 @@ variables:
           $projectFileName = Split-Path $project -Leaf
 
           $appConfigContent = switch -Wildcard ($projectFileName) {
-              "*PanelPresentationLayer.csproj*" { if ($branch -eq "stable") { $env:APPCONFIG_PANEL_PROD } else { $env:APPCONFIG_PANEL_DEV } }
+              "*LawyerAssistant.PanelAPI.csproj*" { if ($branch -eq "stable") { $env:APP_SETTING_PROD } else { $env:APP_SETTING_DEV } }
                default   { "" }
           }
 
-          $appConfigDest = Join-Path $Env:OUTPUT "appconfig.json"
+          $appConfigDest = Join-Path $Env:OUTPUT "appsettings.json"
 
           if (-not [string]::IsNullOrWhiteSpace($appConfigContent)) {
               # نوشتن محتوای JSON در فایل
@@ -103,6 +84,6 @@ deploy-api:
   variables:
     PROJECT: "$API_CSPROJ"
     OUTPUT: "$PUBLISH_ROOT/api"
-    WEB_SITE_DEV: "api.dev.hooshmg.com"
-    WEB_SITE_PROD: "api.hooshmg.com"
+    WEB_SITE_DEV: "api.dev.dadnegaar.ir"
+    WEB_SITE_PROD: "api.dadnegaar.ir"
   <<: *deploy_job_template
