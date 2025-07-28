@@ -7,4 +7,5 @@ namespace LawyerAssistant.Application.Features.Files.Queries;
 public class GetFilesQuery : PagingRequest, IRequest<SysResult<PagingResponse<FilesListDto>>>
 {
     public string? Title { get; set; }
+    public bool? IsLegal { get; set; }
 }
