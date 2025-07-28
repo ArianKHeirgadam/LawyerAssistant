@@ -1,0 +1,108 @@
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "stable" || $CI_COMMIT_BRANCH == "develop"'
+      changes:
+        - version.yaml
+    - when: never
+
+default:
+  tags: [win]
+
+stages:
+  - version
+  - deploy
+
+variables:
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
+  VERSION_PROPS_PATH: "version.props"
+
+  SOLUTION: "SahadMarket_NetCore.sln"
+  PUBLISH_ROOT: "publish"
+
+#   PANEL_CSPROJ: "PanelPresentationLayer/PanelPresentationLayer.csproj"
+#   SITE_CSPROJ: "WebPresentationLayer/WebPresentationLayer.csproj"
+  API_CSPROJ: "WebServicePresentationLayer/WebServicePresentationLayer.csproj"
+
+# Tag-Check:
+#   stage: version
+#   script:
+#     - echo "Adding Tag For Release..."
+#     - $APP_VERSION=$(yq e '.version' version.yaml);
+#     - if ($(git tag -l "$APP_VERSION")) {
+#       echo "Tag $APP_VERSION Already Exists. Stopping The Pipeline...";
+#       exit 1;
+#       } else {
+#       echo "Tag $APP_VERSION does not exist. Creating and pushing tag...";
+#       git tag -a $APP_VERSION -m "Release version $APP_VERSION";
+#       git push https://root:$CI_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git --tags;
+#       }
+
+.deploy_job_template: &deploy_job_template
+  tags: [win]
+  script:
+    - dotnet publish "$PROJECT" -c Release -o "$OUTPUT"
+
+    - |
+      powershell -NoProfile -ExecutionPolicy Bypass -Command {
+      
+          $branch = $Env:CI_COMMIT_BRANCH
+          $project = $Env:PROJECT
+
+          $projectFileName = Split-Path $project -Leaf
+
+          $appConfigContent = switch -Wildcard ($projectFileName) {
+              "*PanelPresentationLayer.csproj*" { if ($branch -eq "stable") { $env:APPCONFIG_PANEL_PROD } else { $env:APPCONFIG_PANEL_DEV } }
+               default   { "" }
+          }
+
+          $appConfigDest = Join-Path $Env:OUTPUT "appconfig.json"
+
+          if (-not [string]::IsNullOrWhiteSpace($appConfigContent)) {
+              # نوشتن محتوای JSON در فایل
+              $appConfigContent | Out-File -FilePath $appConfigDest -Encoding utf8
+              Write-Host "✅ appconfig.json created at $appConfigDest"
+          } else {
+              Write-Host "⚠️ appconfig content is empty. Skipping..."
+          }
+
+          $site = if ($branch -eq "stable") { $Env:WEB_SITE_PROD } else { $Env:WEB_SITE_DEV }
+
+          if ([string]::IsNullOrWhiteSpace($site)) {
+            Write-Error "❌ IIS site name is not set (WEB_SITE_DEV or WEB_SITE_PROD)."
+            exit 1
+          }
+
+          $sourcePath = Resolve-Path $Env:OUTPUT | Select-Object -ExpandProperty Path
+          if (-not (Test-Path $sourcePath)) {
+            Write-Error "❌ Publish folder not found: $sourcePath"
+            exit 1
+          }
+
+          $msdeploy = "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe"
+          if (-not (Test-Path $msdeploy)) {
+            Write-Error "❌ msdeploy.exe not found: $msdeploy"
+            exit 1
+          }
+
+          Write-Host "🚀 Starting deployment to $site"
+
+          & $msdeploy `
+            -verb:sync `
+            -source:contentPath="$sourcePath" `
+            -dest:"contentPath=$site,computerName=https://$Env:WEBDEPLOY_SERVER/msdeploy.axd?site=$site,userName=$Env:WEBDEPLOY_USERNAME,password=$Env:WEBDEPLOY_PASSWORD,authType=Basic" `
+            -enableRule:AppOffline `
+            -allowUntrusted
+
+          Write-Host "✅ Deployment to $site completed successfully."
+      }
+
+
+deploy-api:
+  stage: deploy
+  variables:
+    PROJECT: "$API_CSPROJ"
+    OUTPUT: "$PUBLISH_ROOT/api"
+    WEB_SITE_DEV: "api.dev.hooshmg.com"
+    WEB_SITE_PROD: "api.hooshmg.com"
+  <<: *deploy_job_template
