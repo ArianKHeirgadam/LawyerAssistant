@@ -29,6 +29,7 @@ public class GetFilesQueryHandler : IRequestHandler<GetFilesQuery, SysResult<Pag
                 string.IsNullOrEmpty(request.Title) ||
                 (!f.IsLegal && (f.Customer.FirstName + " " + f.Customer.LastName).ToLower().Contains(request.Title.ToLower()))
             )
+            .Where(f => request.IsLegal != null ? f.IsLegal == request.IsLegal : true)
             .Include(f => f.Customer)
             .Include(f => f.Legal)
             .Include(f => f.Demand)
