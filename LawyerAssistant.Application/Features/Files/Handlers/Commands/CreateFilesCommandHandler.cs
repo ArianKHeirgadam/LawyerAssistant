@@ -25,7 +25,6 @@ public class CreateFilesCommandHandler : IRequestHandler<CreateFilesCommand, Sys
         (
             request.Dto.Title,
             request.Dto.DemandId,
-            request.Dto.FileTypeId,
             request.Dto.CustomerId,
             request.Dto.LegalId,
             request.Dto.IsLegal

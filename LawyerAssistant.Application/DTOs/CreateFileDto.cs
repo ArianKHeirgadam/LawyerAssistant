@@ -12,10 +12,6 @@ public class CreateFileDto
     [Display(Name = "شناسه خواسته")]
     public int DemandId { get; set; }
 
-    [Required(ErrorMessage = ValidationCommonMessages.Required)]
-    [Display(Name = "نوع پرونده")]
-    public int FileTypeId { get; set; }
-
     [Display(Name = "شناسه مشتری")]
     public int? CustomerId { get; set; }
 
