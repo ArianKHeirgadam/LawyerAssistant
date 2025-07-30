@@ -30,11 +30,6 @@ public class FilesMap : IEntityTypeConfiguration<FilesModel>
                .HasForeignKey(f => f.DemandId)
                .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(f => f.FilesTypes)
-               .WithMany(f => f.Files)
-               .HasForeignKey(f => f.FileTypeId)
-               .OnDelete(DeleteBehavior.Restrict);
-
         builder.Property(c => c.RegDateTime).HasColumnType("datetime").IsRequired();
         builder.Property(c => c.ModDateTime).HasColumnType("datetime");
     }

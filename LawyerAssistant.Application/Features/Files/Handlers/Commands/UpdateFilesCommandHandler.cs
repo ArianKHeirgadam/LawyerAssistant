@@ -27,7 +27,6 @@ public class UpdateFilesCommandHandler : IRequestHandler<UpdateFilesCommand, Sys
         file.Edit(
             request.Dto.Title,
             request.Dto.DemandId,
-            request.Dto.FileTypeId,
             request.Dto.CustomerId,
             request.Dto.LegalId,
             request.Dto.IsLegal
