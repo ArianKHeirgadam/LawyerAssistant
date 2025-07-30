@@ -25,10 +25,7 @@ public class GetFilesQueryHandler : IRequestHandler<GetFilesQuery, SysResult<Pag
     public async Task<SysResult<PagingResponse<FilesListDto>>> Handle(GetFilesQuery request, CancellationToken cancellationToken)
     {
         var result = await _repository
-            .Where(f =>
-                string.IsNullOrEmpty(request.Title) ||
-                (!f.IsLegal && (f.Customer.FirstName + " " + f.Customer.LastName).ToLower().Contains(request.Title.ToLower()))
-            )
+            .Where(f => !string.IsNullOrWhiteSpace(request.Title) ? f.Title.Contains(request.Title) :true)
             .Where(f => request.IsLegal != null ? f.IsLegal == request.IsLegal : true)
             .Include(f => f.Customer)
             .Include(f => f.Legal)
