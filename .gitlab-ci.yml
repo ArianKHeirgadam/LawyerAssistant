@@ -93,6 +93,82 @@ Tag-Check:
             -allowUntrusted
 
           Write-Host "✅ Deployment to $site completed successfully."
+
+
+        if ($branch -eq "stable") {
+          # 1. Read version
+          $appVersion   = (yq e '.version' version.yaml)
+          $uploadDir    = "$Env:CI_PROJECT_PATH/$appVersion"
+          $ftpRoot      = "$Env:RELEASE_FTP_ADDRESS"
+          $downloadRoot = "$Env:RELEASE_ADDRESS"
+          $publishRoot  = "$PUBLISH_ROOT"
+      
+          # Debug: print all variables (including if they are empty)
+          Write-Host "==================== VARIABLES ===================="
+          Write-Host "App Version:     [$appVersion]"
+          Write-Host "Upload Directory:[$uploadDir]"
+          Write-Host "FTP Root:        [$ftpRoot]"
+          Write-Host "Download Root:   [$downloadRoot]"
+          Write-Host "Publish Root:    [$publishRoot]"
+          Write-Host "===================================================="
+      
+          if (-not $appVersion -or -not $ftpRoot -or -not $downloadRoot -or -not $publishRoot) {
+              Write-Error "❌ One or more variables are empty. Check environment variables and version.yaml"
+              exit 1
+          }
+      
+          # 2. Compress PUBLISH_ROOT folder
+          $zipName = "${appVersion}.zip"
+          $zipPath = Join-Path $publishRoot $zipName
+      
+          if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
+      
+          Write-Host "🗜 Compressing '$publishRoot' → $zipName..."
+          Compress-Archive -Path (Join-Path $publishRoot '*') -DestinationPath $zipPath -Force
+          Write-Host "✅ Archive created: $zipPath"
+      
+          # 3. Create FTP directories for upload
+          foreach ($part in $uploadDir.Split('/')) {
+              $ftpRoot = "$ftpRoot/$part"
+              try {
+                  Write-Host "📁 Creating FTP directory: $ftpRoot"
+                  $req = [System.Net.FtpWebRequest]::Create($ftpRoot)
+                  $req.Credentials = New-Object System.Net.NetworkCredential($Env:WEBDEPLOY_USERNAME, $Env:WEBDEPLOY_PASSWORD)
+                  $req.Method     = [System.Net.WebRequestMethods+Ftp]::MakeDirectory
+                  $req.UseBinary  = $true
+                  $req.UsePassive = $true
+                  $req.EnableSsl  = $false
+                  $resp = $req.GetResponse(); $resp.Close()
+                  Write-Host "✅ Created: $ftpRoot"
+              } catch {
+                  if ($_.Exception.Message -like '*550*') { Write-Host "ℹ Already exists: $ftpRoot" }
+                  else { throw }
+              }
+          }
+      
+          # 4. Upload ZIP to FTP
+          $ftpFileUri = "$ftpRoot/$zipName"
+          Write-Host "📤 Uploading archive → $downloadRoot/$zipName"
+      
+          $ftp = [System.Net.FtpWebRequest]::Create($ftpFileUri)
+          $ftp.Credentials = New-Object System.Net.NetworkCredential($Env:WEBDEPLOY_USERNAME, $Env:WEBDEPLOY_PASSWORD)
+          $ftp.Method     = [System.Net.WebRequestMethods+Ftp]::UploadFile
+          $ftp.UseBinary  = $true
+          $ftp.UsePassive = $true
+          $ftp.EnableSsl  = $false
+      
+          $bytes  = [System.IO.File]::ReadAllBytes($zipPath)
+          $stream = $ftp.GetRequestStream()
+          $stream.Write($bytes, 0, $bytes.Length)
+          $stream.Close()
+          $resp = $ftp.GetResponse()
+          Write-Host "→ $($resp.StatusDescription.Trim())"
+          $resp.Close()
+    
+          Write-Host "✅ Backup ZIP uploaded. Download URL: $downloadRoot/$zipName"
+        } else {
+            Write-Host "⚠️ Branch is NOT stable. Skipping backup upload."
+        }
       }
 
 
